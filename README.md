@@ -141,7 +141,15 @@ public class GetUsersEndpoint extends HttpEndpoint<Void, List<UserDTO>> {
 O método `handle` recebe um objeto `HttpRequest` que contém todas as informações da requisição.
 
 #### Path Variables
-Para definir path variables, use chaves `{}` na URI do endpoint (ex: `/users/{id}`). O valor pode ser acessado através do mapa `pathVariables` do objeto `request`.
+Para definir path variables, use chaves `{}` na URI do endpoint (ex: `/users/{id}`). Os valores são acessíveis através do objeto `PathVariableMap` retornado por `request.pathVariables()`.
+
+O `PathVariableMap` oferece métodos convenientes para acessar e converter os valores das variáveis de caminho para diferentes tipos:
+
+-   `getString(String name)`: Retorna o valor da variável como `String`. Lança `HttpException` se a variável não for encontrada.
+-   `getInteger(String name)`: Retorna o valor da variável como `Integer`. Lança `HttpException` se a variável não for encontrada ou não for um número inteiro válido.
+-   `getLong(String name)`: Retorna o valor da variável como `Long`. Lança `HttpException` se a variável não for encontrada ou não for um número longo válido.
+-   `getBoolean(String name)`: Retorna o valor da variável como `Boolean`. Lança `HttpException` se a variável não for encontrada ou não for "true" ou "false" (case-insensitive).
+-   `exists(String name)`: Verifica se uma variável de caminho com o nome especificado existe.
 
 **Exemplo:**
 ```java
