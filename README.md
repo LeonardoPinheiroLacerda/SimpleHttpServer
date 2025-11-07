@@ -145,18 +145,18 @@ Para definir path variables, use chaves `{}` na URI do endpoint (ex: `/users/{id
 
 **Exemplo:**
 ```java
-@Endpoint(uri = "/users/{id}", method = HttpMethod.GET)
+@Endpoint(url = "/users/{id}", method = HttpMethod.GET)
 public class GetUserByIdEndpoint extends HttpEndpoint<Void, UserDTO> {
     @Override
     public HttpResponse<UserDTO> handle(HttpRequest<Void> request) {
-        final String userId = request.pathVariables().get("id");
+        final String userId = request.pathVariables().getString("id");
         // Lógica para buscar o usuário
         UserDTO user = new UserDTO(userId);
         return HttpResponse
-            .<UserDTO> builder()
-            .statusCode(HttpStatusCode.OK)
-            .body(user)
-            .build();
+                .<UserDTO> builder()
+                .statusCode(HttpStatusCode.OK)
+                .body(user)
+                .build();
     }
 }
 ```
@@ -166,7 +166,7 @@ Query parameters (ex: `/search?q=my-query`) são acessados através do mapa `que
 
 **Exemplo:**
 ```java
-@Endpoint(uri = "/search", method = HttpMethod.GET)
+@Endpoint(url = "/search", method = HttpMethod.GET)
 public class SearchEndpoint extends HttpEndpoint<Void, String> {
     @Override
     public HttpResponse<String> handle(HttpRequest<Void> request) {
@@ -185,7 +185,7 @@ Para endpoints que recebem um corpo (ex: POST, PUT), defina o tipo genérico `I`
 
 **Exemplo:**
 ```java
-@Endpoint(uri = "/users", method = HttpMethod.POST)
+@Endpoint(url = "/users", method = HttpMethod.POST)
 public class CreateUserEndpoint extends HttpEndpoint<CreateUserDTO, Void> {
     @Override
     public HttpResponse<Void> handle(HttpRequest<CreateUserDTO> request) {
@@ -204,7 +204,7 @@ Os cabeçalhos da requisição podem ser acessados através do mapa `headers` do
 
 **Exemplo:**
 ```java
-@Endpoint(uri = "/echo-user-agent", method = HttpMethod.GET)
+@Endpoint(url = "/echo-user-agent", method = HttpMethod.GET)
 public class EchoUserAgentEndpoint extends HttpEndpoint<Void, String> {
     @Override
     public HttpResponse<String> handle(HttpRequest<Void> request) {
@@ -231,7 +231,7 @@ O builder permite configurar cada parte da resposta de forma fluente:
 
 **Exemplo Completo: Retornando um arquivo para download com cabeçalhos customizados.**
 ```java
-@Endpoint(uri = "/download-report", method = HttpMethod.GET)
+@Endpoint(url = "/download-report", method = HttpMethod.GET)
 public class DownloadReportEndpoint extends HttpEndpoint<Void, String> {
     @Override
     public HttpResponse<String> handle(HttpRequest<Void> request) {
@@ -272,7 +272,7 @@ public class LogMiddleware extends Middleware {
 **Aplicação em um endpoint:**
 ```java
 @Endpoint(
-    uri = "/protected-resource", 
+    url = "/protected-resource", 
     method = HttpMethod.GET, 
     middlewares = {LogMiddleware.class} // Aplica o middleware
 )
