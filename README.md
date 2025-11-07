@@ -170,7 +170,17 @@ public class GetUserByIdEndpoint extends HttpEndpoint<Void, UserDTO> {
 ```
 
 #### Query Parameters
-Query parameters (ex: `/search?q=my-query`) são acessados através do mapa `queries` do objeto `request`.
+Query parameters (ex: `/search?q=my-query`) são acessados através do método `request.queryParameters()`, que retorna um objeto `QueryParameterMap`.
+
+Como query parameters são opcionais por natureza em uma requisição HTTP, os métodos de `QueryParameterMap` retornam um `Optional<T>`. Isso permite um tratamento elegante para casos onde o parâmetro pode ou não estar presente, evitando `NullPointerException`s e tornando o código mais robusto e legível.
+
+O `QueryParameterMap` oferece os seguintes métodos:
+
+-   `getString(String name)`: Retorna um `Optional<String>` contendo o valor do parâmetro.
+-   `getInteger(String name)`: Tenta converter o parâmetro para `Integer` e retorna um `Optional<Integer>`. Lança `HttpException` se o valor não for um número inteiro válido.
+-   `getLong(String name)`: Tenta converter o parâmetro para `Long` e retorna um `Optional<Long>`. Lança `HttpException` se o valor não for um número longo válido.
+-   `getBoolean(String name)`: Tenta converter o parâmetro para `Boolean` e retorna um `Optional<Boolean>`. Lança `HttpException` se o valor não for "true" ou "false".
+-   `exists(String name)`: Verifica se um query parameter com o nome especificado existe na requisição.
 
 **Exemplo:**
 ```java
