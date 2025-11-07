@@ -3,6 +3,7 @@ package br.com.leonardo.http.context;
 import br.com.leonardo.http.HttpMethod;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.util.PathVariablesUtil;
+import br.com.leonardo.util.QueryParametersUtil;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +33,10 @@ public class HttpEndpointContext {
                 .flatMap(set ->
                         set
                             .stream()
-                            .filter(handler -> PathVariablesUtil.match(handler.getUri(), requestLine.uri()))
+                            .filter(handler ->
+                                    PathVariablesUtil.match(handler.getUri(), requestLine.uri()) ||
+                                    QueryParametersUtil.match(handler.getUri(), requestLine.uri())
+                            )
                             .findFirst()
                 );
     }

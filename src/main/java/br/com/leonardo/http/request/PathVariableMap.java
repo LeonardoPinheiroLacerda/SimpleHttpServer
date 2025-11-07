@@ -38,7 +38,7 @@ public record PathVariableMap(Map<String, String> map) {
         if ("true".equalsIgnoreCase(value)) {
             return true;
         }
-        if ("false".equalsIgnoreCase(value)) {
+        else if ("false".equalsIgnoreCase(value)) {
             return false;
         }
         throw new HttpException("Path variable '" + name + "' is not a valid boolean", HttpStatusCode.BAD_REQUEST, null);

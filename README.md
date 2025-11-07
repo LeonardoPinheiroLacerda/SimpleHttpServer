@@ -27,7 +27,7 @@ Para iniciar, adicione a dependência do framework ao seu `pom.xml`:
 ```xml
 <dependency>
     <groupId>br.com.leonardo</groupId>
-    <artifactId>HttpServer</artifactId>
+    <artifactId>SimpleHttpServer</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
@@ -178,14 +178,19 @@ Query parameters (ex: `/search?q=my-query`) são acessados através do mapa `que
 public class SearchEndpoint extends HttpEndpoint<Void, String> {
     @Override
     public HttpResponse<String> handle(HttpRequest<Void> request) {
-        final String query = request.queries().get("q");
+        final String query = request
+                .queryParameters()
+                .getString("q")
+                .orElse("default");
+
         return HttpResponse
-            .<String> builder()
-            .statusCode(HttpStatusCode.OK)
-            .body("Você buscou por: " + query)
-            .build();
+                .<String> builder()
+                .statusCode(HttpStatusCode.OK)
+                .body("Você buscou por: " + query)
+                .build();
     }
 }
+
 ```
 
 #### Corpo da Requisição (Body)

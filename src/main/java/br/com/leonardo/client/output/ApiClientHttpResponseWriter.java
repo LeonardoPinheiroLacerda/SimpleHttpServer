@@ -8,9 +8,11 @@ import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.context.HttpEndpointContext;
 import br.com.leonardo.http.context.HttpEndpoint;
 import br.com.leonardo.http.request.PathVariableMap;
+import br.com.leonardo.http.request.QueryParameterMap;
 import br.com.leonardo.http.response.HttpResponse;
 import br.com.leonardo.util.ContentNegotiationUtil;
 import br.com.leonardo.util.PathVariablesUtil;
+import br.com.leonardo.util.QueryParametersUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -42,13 +44,14 @@ public class ApiClientHttpResponseWriter implements ClientHttpWriter {
         }
 
         PathVariableMap pathVariableMap = PathVariablesUtil.extract(requestLine, endpointHandler);
+        QueryParameterMap queryParameterMap = QueryParametersUtil.extract(requestLine);
 
         endpointHandler
-                .runMiddlewares(requestLine, headers, body, pathVariableMap);
+                .runMiddlewares(requestLine, headers, body, pathVariableMap, queryParameterMap);
 
         try {
             return endpointHandler
-                    .createResponse(requestLine, headers, body, pathVariableMap);
+                    .createResponse(requestLine, headers, body, pathVariableMap, queryParameterMap);
         }catch (IOException e) {
             throw new HttpException(e.getMessage(), HttpStatusCode.INTERNAL_SERVER_ERROR, requestLine.uri());
         }
