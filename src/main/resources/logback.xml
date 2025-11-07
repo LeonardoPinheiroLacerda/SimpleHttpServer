@@ -1,0 +1,15 @@
+<configuration>
+    <property resource="http-server.properties" />                                                                                                                          │
+    <conversionRule conversionWord="highlightex" converterClass="br.com.leonardo.config.HighlightingCompositeConverter" />
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder withJansi="true">
+            <pattern>${log.pattern:-%d %magenta([%15t]) %red(%mdc{traceId}) %highlightex(%-5level) %-45blue(%logger{26}): %msg%n%throwable}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="${log.level:-INFO}">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
