@@ -27,6 +27,21 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: Configure Maven settings.xml
+        run: |
+          mkdir -p ~/.m2
+          cat <<EOF > ~/.m2/settings.xml
+          <settings>
+            <servers>
+              <server>
+                <id>central</id>
+                <username>${{ secrets.CENTRAL_USERNAME }}</username>
+                <password>${{ secrets.CENTRAL_TOKEN }}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+
       - name: Run Tests
         run: mvn -B clean test
 
@@ -57,7 +72,4 @@ jobs:
 
       - name: Publish to Maven Central
         run: |
-          mvn -B deploy -DskipTests \
-            -Dcentral.username=${{ secrets.CENTRAL_USERNAME }} \
-            -Dcentral.token=${{ secrets.CENTRAL_TOKEN }} \
-            -Dcentral.publisher.serverId=central
+          mvn -B deploy -DskipTests
