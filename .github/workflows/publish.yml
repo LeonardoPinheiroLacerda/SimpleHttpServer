@@ -21,6 +21,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Run Tests
+        run: mvn -B clean test
+
       - name: Set up Git
         run: |
           git config user.name "LeonardoPinheiroLacerda"
@@ -51,9 +54,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-          server-id: central
-          server-username: ${{ secrets.CENTRAL_USERNAME }}
-          server-password: ${{ secrets.CENTRAL_TOKEN }}
-      
-      - name: Publish package
-        run: mvn -B clean deploy
+
+      - name: Publish to Maven Central
+        run: mvn -B clean deploy -DskipTests -Dcentral.username=${{ secrets.CENTRAL_USERNAME }} -Dcentral.token=${{ secrets.CENTRAL_TOKEN }}
