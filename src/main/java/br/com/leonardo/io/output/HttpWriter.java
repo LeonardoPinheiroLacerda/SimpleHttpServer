@@ -4,6 +4,7 @@ import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.response.HttpResponse;
+import br.com.leonardo.parser.factory.model.HttpRequestData;
 import br.com.leonardo.util.ContentNegotiationUtil;
 import br.com.leonardo.observability.TraceIdLifeCycleHandler;
 
@@ -100,10 +101,7 @@ public interface HttpWriter {
         return bodyBytes;
     }
 
-    HttpResponse<?> generateResponse(
-            RequestLine requestLine,
-            Set<HttpHeader> headers,
-            byte[] body) throws HttpException;
+    HttpResponse<?> generateResponse(HttpRequestData requestData) throws HttpException;
 
     byte[] getBody(RequestLine requestLine,
                    Set<HttpHeader> headers,

@@ -1,6 +1,6 @@
 package br.com.leonardo.server;
 
-import br.com.leonardo.router.context.HttpEndpointContext;
+import br.com.leonardo.router.core.HttpEndpointResolver;
 import br.com.leonardo.io.ConnectionIOHandler;
 import br.com.leonardo.config.ApplicationProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -18,14 +18,14 @@ public class Server implements AutoCloseable {
 
     private final ServerSocket serverSocket;
     private final ExecutorService executorService;
-    private final HttpEndpointContext context;
+    private final HttpEndpointResolver resolver;
 
     private volatile boolean isRunning = true;
 
-    public Server(HttpEndpointContext context) throws IOException {
+    public Server(HttpEndpointResolver resolver) throws IOException {
         this.serverSocket = new ServerSocket(ApplicationProperties.getPort());
         this.executorService = Executors.newVirtualThreadPerTaskExecutor();
-        this.context = context;
+        this.resolver = resolver;
 
     }
 
@@ -37,7 +37,7 @@ public class Server implements AutoCloseable {
             try {
                 Socket client = serverSocket.accept();
                 log.trace("Accepted client from {}", client.getRemoteSocketAddress());
-                executorService.submit(new ConnectionIOHandler(client, context));
+                executorService.submit(new ConnectionIOHandler(client, resolver));
                 log.trace("Submitted client IO task for {}", client.getRemoteSocketAddress());
             } catch (SocketException e) {
                 if (!isRunning) {

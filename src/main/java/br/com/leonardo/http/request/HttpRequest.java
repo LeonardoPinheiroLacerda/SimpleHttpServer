@@ -15,4 +15,15 @@ public record HttpRequest<I>(
     public String uri() {
         return requestLine.uri().split("\\?")[0];
     }
+
+    public HttpRequest<I> withBody(I body) {
+        return new HttpRequest<>(
+                this.requestLine,
+                this.headers,
+                body,
+                this.pathVariables,
+                this.queryParameters
+        );
+    }
+
 }

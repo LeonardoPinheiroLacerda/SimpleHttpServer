@@ -7,10 +7,10 @@ public record EndpointUriMatcher(
 ) implements UriMatcher {
 
     @Override
-    public boolean match(String inputUri, String contextUri) {
+    public boolean match(String inputUri, String resolverUri) {
         final long count = uriMatchers
                 .stream()
-                .filter(matcher -> matcher.match(inputUri, contextUri))
+                .filter(matcher -> matcher.match(inputUri, resolverUri))
                 .count();
 
         return count >= 1;

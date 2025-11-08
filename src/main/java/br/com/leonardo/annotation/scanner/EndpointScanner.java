@@ -2,8 +2,8 @@ package br.com.leonardo.annotation.scanner;
 
 import br.com.leonardo.annotation.Endpoint;
 import br.com.leonardo.exception.ServerInitializationException;
-import br.com.leonardo.router.context.HttpEndpoint;
-import br.com.leonardo.router.context.HttpEndpointContext;
+import br.com.leonardo.router.core.HttpEndpoint;
+import br.com.leonardo.router.core.HttpEndpointResolver;
 import br.com.leonardo.http.middleware.Middleware;
 import br.com.leonardo.observability.nodetree.Node;
 import br.com.leonardo.observability.nodetree.TreeNodeLogger;
@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 
 @Slf4j
 public record EndpointScanner(
-        HttpEndpointContext context
+        HttpEndpointResolver resolver
 ) {
 
     public void scan(Class<?> clazz) {
@@ -57,7 +57,7 @@ public record EndpointScanner(
 
                         }
 
-                        context.add(httpEndpoint);
+                        resolver.add(httpEndpoint);
                         root.addChild(endpointNode);
 
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException |

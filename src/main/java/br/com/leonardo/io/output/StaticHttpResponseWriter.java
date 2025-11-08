@@ -4,6 +4,7 @@ import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.HttpStatusCode;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.response.HttpResponse;
+import br.com.leonardo.parser.factory.model.HttpRequestData;
 import br.com.leonardo.util.ContentNegotiationUtil;
 
 import java.io.IOException;
@@ -12,11 +13,11 @@ import java.util.Set;
 public class StaticHttpResponseWriter implements HttpWriter {
 
     @Override
-    public HttpResponse<?> generateResponse(RequestLine requestLine, Set<HttpHeader> headers, byte[] body) {
+    public HttpResponse<?> generateResponse(HttpRequestData requestData) {
         return HttpResponse
                 .<byte[]>builder()
                 .statusCode(HttpStatusCode.OK)
-                .body(body)
+                .body(requestData.body())
                 .build();
 
     }

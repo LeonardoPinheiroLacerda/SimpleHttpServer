@@ -1,6 +1,6 @@
 package br.com.leonardo.io;
 
-import br.com.leonardo.router.context.HttpEndpointContext;
+import br.com.leonardo.router.core.HttpEndpointResolver;
 import br.com.leonardo.io.input.HttpRequestReader;
 import br.com.leonardo.io.output.HttpWriter;
 import br.com.leonardo.io.output.factory.HttpWriterFactory;
@@ -23,7 +23,7 @@ import java.util.Set;
 @Slf4j
 public record ConnectionIOHandler(
         Socket clientConnection,
-        HttpEndpointContext context
+        HttpEndpointResolver resolver
 ) implements Runnable {
 
     @Override
@@ -60,17 +60,11 @@ public record ConnectionIOHandler(
 
         final RequestLine requestLine = requestData.requestLine();
         final Set<HttpHeader> headers = requestData.headers();
-        final byte[] body = requestData.body();
 
-        final HttpWriter httpWriter = HttpWriterFactory.create(requestLine, context);
+        final HttpWriter httpWriter = HttpWriterFactory.create(requestLine, resolver);
 
         try {
-            final HttpResponse<?> response = httpWriter
-                    .generateResponse(
-                            requestLine,
-                            headers,
-                            body
-                    );
+            final HttpResponse<?> response = httpWriter.generateResponse(requestData);
 
             log.trace("Writing response for request: {}", requestLine);
             final String rawResponse = httpWriter.writeResponse(
