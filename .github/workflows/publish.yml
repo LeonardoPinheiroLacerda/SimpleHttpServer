@@ -59,7 +59,7 @@ jobs:
           EOF
 
       - name: Build and publish
-        run: mvn -B clean deploy -DskipTests -P release
+        run: mvn -B clean deploy -DskipTests
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
