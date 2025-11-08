@@ -66,10 +66,8 @@ jobs:
           gpgconf --kill gpg-agent
           gpgconf --launch gpg-agent
 
-
       - name: Build and publish
-        run: mvn -B clean deploy -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} -DskipTests
-
+        run: mvn -B clean deploy -DskipTests "-Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}"
 
       - name: Set up Git
         run: |
