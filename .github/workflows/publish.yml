@@ -21,6 +21,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
       - name: Run Tests
         run: mvn -B clean test
 
@@ -48,12 +54,6 @@ jobs:
           tag_name: ${{ steps.version.outputs.tag }}
           name: "Release ${{ steps.version.outputs.tag }}"
           generate_release_notes: true
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
 
       - name: Publish to Maven Central
         run: mvn -B clean deploy -DskipTests -Dcentral.username=${{ secrets.CENTRAL_USERNAME }} -Dcentral.token=${{ secrets.CENTRAL_TOKEN }}
