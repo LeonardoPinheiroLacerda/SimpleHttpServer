@@ -320,7 +320,7 @@ public class DownloadReportEndpoint extends HttpEndpoint<Void, String> {
 
 # Middlewares
 
-Middlewares permitem executar lógicas antes de um endpoint (ex: autenticação, logging). Para criar um, estenda a classe `Middleware` e implemente o método `run`. Para passar a requisição adiante, chame `this.handle(request, response)`.
+Middlewares permitem executar lógicas antes de um endpoint (ex: autenticação, logging). Para criar um, estenda a classe `Middleware` e implemente o método `run`. O framework se encarrega de chamar o próximo middleware na cadeia ou o endpoint final automaticamente após a execução do método `run`.
 
 Middlewares são adicionados a um endpoint através do parâmetro `middlewares` da anotação `@Endpoint` e são executados na ordem declarada.
 
@@ -328,13 +328,9 @@ Middlewares são adicionados a um endpoint através do parâmetro `middlewares` 
 ```java
 public class LogMiddleware extends Middleware {
     @Override
-    public <I, O> void run(HttpRequest<I> request, HttpResponse<O> response) {
+    public void run(HttpRequest<?> request) {
         System.out.println("Middleware: Requisição recebida com os cabeçalhos: " + request.headers());
-        
-        // Continua para o próximo middleware ou para o endpoint
-        this.handle(request, response); 
-        
-        System.out.println("Middleware: Resposta enviada.");
+        // A lógica para continuar para o próximo middleware ou endpoint é tratada automaticamente pelo framework.
     }
 }
 ```
@@ -342,11 +338,11 @@ public class LogMiddleware extends Middleware {
 **Aplicação em um endpoint:**
 ```java
 @Endpoint(
-    url = "/protected-resource", 
+    url = "/users", 
     method = HttpMethod.GET, 
     middlewares = {LogMiddleware.class} // Aplica o middleware
 )
-public class ProtectedEndpoint extends HttpEndpoint<Void, String> {
+public class GetUsersEndpoint extends HttpEndpoint<Void, String> {
     // ...
 }
 ```
