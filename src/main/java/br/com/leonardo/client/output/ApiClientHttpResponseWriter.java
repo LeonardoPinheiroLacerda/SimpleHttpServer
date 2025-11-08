@@ -7,10 +7,12 @@ import br.com.leonardo.http.HttpStatusCode;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.context.HttpEndpointContext;
 import br.com.leonardo.http.context.HttpEndpoint;
+import br.com.leonardo.http.request.HeaderMap;
 import br.com.leonardo.http.request.PathVariableMap;
 import br.com.leonardo.http.request.QueryParameterMap;
 import br.com.leonardo.http.response.HttpResponse;
 import br.com.leonardo.util.ContentNegotiationUtil;
+import br.com.leonardo.util.HeaderUtil;
 import br.com.leonardo.util.PathVariablesUtil;
 import br.com.leonardo.util.QueryParametersUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -45,13 +47,14 @@ public class ApiClientHttpResponseWriter implements ClientHttpWriter {
 
         PathVariableMap pathVariableMap = PathVariablesUtil.extract(requestLine, endpointHandler);
         QueryParameterMap queryParameterMap = QueryParametersUtil.extract(requestLine);
+        HeaderMap headerMap = HeaderUtil.extract(headers);
 
         endpointHandler
-                .runMiddlewares(requestLine, headers, body, pathVariableMap, queryParameterMap);
+                .runMiddlewares(requestLine, headerMap, body, pathVariableMap, queryParameterMap);
 
         try {
             return endpointHandler
-                    .createResponse(requestLine, headers, body, pathVariableMap, queryParameterMap);
+                    .createResponse(requestLine, headerMap, body, pathVariableMap, queryParameterMap);
         }catch (IOException e) {
             throw new HttpException(e.getMessage(), HttpStatusCode.INTERNAL_SERVER_ERROR, requestLine.uri());
         }

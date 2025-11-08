@@ -6,7 +6,7 @@ import br.com.leonardo.http.HttpStatusCode;
 import java.util.Map;
 import java.util.Optional;
 
-public record QueryParameterMap(Map<String, String> map) {
+public record HeaderMap(Map<String, String> map) {
 
     public Optional<String> getString(String name) {
         return Optional.ofNullable(map.get(name));
@@ -19,7 +19,7 @@ public record QueryParameterMap(Map<String, String> map) {
         try {
             return Optional.of(Integer.parseInt(value));
         } catch (NumberFormatException e) {
-            throw new HttpException("Query parameter '" + name + "' is not a valid integer", HttpStatusCode.BAD_REQUEST, null);
+            throw new HttpException("Header '" + name + "' is not a valid integer", HttpStatusCode.BAD_REQUEST, null);
         }
     }
 
@@ -30,7 +30,7 @@ public record QueryParameterMap(Map<String, String> map) {
         try {
             return Optional.of(Long.parseLong(value));
         } catch (NumberFormatException e) {
-            throw new HttpException("Query parameter '" + name + "' is not a valid integer", HttpStatusCode.BAD_REQUEST, null);
+            throw new HttpException("Header '" + name + "' is not a valid integer", HttpStatusCode.BAD_REQUEST, null);
         }
     }
 
@@ -47,7 +47,7 @@ public record QueryParameterMap(Map<String, String> map) {
             return Optional.empty();
         }
 
-        throw new HttpException("Query parameter '" + name + "' is not a valid boolean", HttpStatusCode.BAD_REQUEST, null);
+        throw new HttpException("Header '" + name + "' is not a valid boolean", HttpStatusCode.BAD_REQUEST, null);
     }
 
     private String getNotNullableString(String name) {

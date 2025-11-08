@@ -257,7 +257,17 @@ public class CreateUserEndpoint extends HttpEndpoint<CreateUserDTO, Void> {
 ```
 
 #### Headers
-Os cabeçalhos da requisição podem ser acessados através do mapa `headers` do objeto `request`. Para recuperar um cabeçalho específico, utilize o nome do cabeçalho como chave no mapa.
+Os cabeçalhos da requisição podem ser acessados através do método `request.headers()`, que retorna um objeto `HeaderMap`.
+
+Como os cabeçalhos são opcionais em uma requisição HTTP, os métodos de `HeaderMap` retornam um `Optional<T>`. Isso permite um tratamento elegante para casos onde o cabeçalho pode ou não estar presente, evitando `NullPointerException`s e tornando o código mais robusto e legível.
+
+O `HeaderMap` oferece os seguintes métodos:
+
+-   `getString(String name)`: Retorna um `Optional<String>` contendo o valor do cabeçalho.
+-   `getInteger(String name)`: Tenta converter o cabeçalho para `Integer` e retorna um `Optional<Integer>`. Lança `HttpException` se o valor não for um número inteiro válido.
+-   `getLong(String name)`: Tenta converter o cabeçalho para `Long` e retorna um `Optional<Long>`. Lança `HttpException` se o valor não for um número longo válido.
+-   `getBoolean(String name)`: Tenta converter o cabeçalho para `Boolean` e retorna um `Optional<Boolean>`. Lança `HttpException` se o valor não for "true" ou "false".
+-   `exists(String name)`: Verifica se um cabeçalho com o nome especificado existe na requisição.
 
 **Exemplo:**
 ```java
@@ -265,12 +275,15 @@ Os cabeçalhos da requisição podem ser acessados através do mapa `headers` do
 public class EchoUserAgentEndpoint extends HttpEndpoint<Void, String> {
     @Override
     public HttpResponse<String> handle(HttpRequest<Void> request) {
-        final String userAgent = request.headers().get("User-Agent");
+        final String userAgent = request
+                .headers()
+                .getString("User-Agent")
+                .orElse("Unknown");
         return HttpResponse
-            .<String> builder()
-            .statusCode(HttpStatusCode.OK)
-            .body("User-Agent: " + userAgent)
-            .build();
+                .<String> builder()
+                .statusCode(HttpStatusCode.OK)
+                .body("User-Agent: " + userAgent)
+                .build();
     }
 }
 ```
