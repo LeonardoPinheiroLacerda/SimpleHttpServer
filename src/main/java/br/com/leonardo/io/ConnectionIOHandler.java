@@ -1,16 +1,16 @@
-package br.com.leonardo.client;
+package br.com.leonardo.io;
 
-import br.com.leonardo.client.input.ClientHttpRequestReader;
-import br.com.leonardo.client.output.ClientHttpWriter;
-import br.com.leonardo.client.output.factory.ClientHttpWriterFactory;
+import br.com.leonardo.io.input.HttpRequestReader;
+import br.com.leonardo.io.output.HttpWriter;
+import br.com.leonardo.io.output.factory.HttpWriterFactory;
 import br.com.leonardo.config.ApplicationProperties;
 import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.response.HttpResponse;
-import br.com.leonardo.parser.HttpRequestData;
-import br.com.leonardo.parser.HttpRequestParser;
-import br.com.leonardo.util.TraceIdUtil;
+import br.com.leonardo.parser.factory.model.HttpRequestData;
+import br.com.leonardo.parser.factory.HttpRequestFactory;
+import br.com.leonardo.observability.TraceIdLifeCycleHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ import java.net.Socket;
 import java.util.Set;
 
 @Slf4j
-public record ClientIOHandler(Socket clientConnection) implements Runnable {
+public record ConnectionIOHandler(Socket clientConnection) implements Runnable {
 
     @Override
     public void run() {
@@ -28,7 +28,7 @@ public record ClientIOHandler(Socket clientConnection) implements Runnable {
                 OutputStream outputStream = clientConnection.getOutputStream();
                 InputStream inputStream = clientConnection.getInputStream()
         ) {
-            TraceIdUtil.initializeTraceId();
+            TraceIdLifeCycleHandler.initializeTraceId();
             handleRequest(inputStream, outputStream);
         } catch (IOException e) {
             log.error("Client IO Error", e);
@@ -39,13 +39,13 @@ public record ClientIOHandler(Socket clientConnection) implements Runnable {
     private void handleRequest(InputStream inputStream, OutputStream outputStream) throws IOException {
         final long start = System.nanoTime();
 
-        final String clientRawRequest = ClientHttpRequestReader.readRequest(inputStream);
+        final String clientRawRequest = HttpRequestReader.readRequest(inputStream);
 
         if (clientRawRequest.length() <= 1) {
             return;
         }
 
-        HttpRequestData requestData = HttpRequestParser.parseHttpRequest(clientRawRequest);
+        HttpRequestData requestData = HttpRequestFactory.fromRawRequest(clientRawRequest);
         dispatchResponse(outputStream, requestData);
 
         final long elapsedNanos = System.nanoTime() - start;
@@ -58,10 +58,10 @@ public record ClientIOHandler(Socket clientConnection) implements Runnable {
         final Set<HttpHeader> headers = requestData.headers();
         final byte[] body = requestData.body();
 
-        final ClientHttpWriter clientHttpWriter = ClientHttpWriterFactory.create(requestLine);
+        final HttpWriter httpWriter = HttpWriterFactory.create(requestLine);
 
         try {
-            final HttpResponse<?> response = clientHttpWriter
+            final HttpResponse<?> response = httpWriter
                     .generateResponse(
                             requestLine,
                             headers,
@@ -69,7 +69,7 @@ public record ClientIOHandler(Socket clientConnection) implements Runnable {
                     );
 
             log.trace("Writing response for request: {}", requestLine);
-            final String rawResponse = clientHttpWriter.writeResponse(
+            final String rawResponse = httpWriter.writeResponse(
                     outputStream,
                     response,
                     requestLine,
@@ -83,17 +83,17 @@ public record ClientIOHandler(Socket clientConnection) implements Runnable {
             log.trace("Response written successfully for request: {}", requestLine);
 
         } catch (HttpException e) {
-            ClientIOErrorHandler.dispatchHttpException(
+            ConnectionErrorHandler.dispatchHttpException(
                     outputStream,
-                    clientHttpWriter,
+                    httpWriter,
                     requestLine,
                     headers,
                     e
             );
         } catch (Exception e) {
-            ClientIOErrorHandler.dispatchException(
+            ConnectionErrorHandler.dispatchException(
                     outputStream,
-                    clientHttpWriter,
+                    httpWriter,
                     requestLine,
                     headers,
                     e

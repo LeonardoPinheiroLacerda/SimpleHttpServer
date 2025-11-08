@@ -4,7 +4,7 @@ public class RequestBodyParser {
 
     private final static String doubleCrlf = "\r\n\r\n";
 
-    protected static byte[] parseRequestBody(String rawRequest) {
+    public static byte[] parseRequestBody(String rawRequest) {
 
         final String[] chunks = rawRequest.split(doubleCrlf);
 

@@ -1,4 +1,4 @@
-package br.com.leonardo.client.output;
+package br.com.leonardo.io.output;
 
 import br.com.leonardo.config.ApplicationProperties;
 import br.com.leonardo.exception.HttpException;
@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.Set;
 
 @Slf4j
-public class ApiClientHttpResponseWriter implements ClientHttpWriter {
+public class ApiHttpResponseWriter implements HttpWriter {
 
     @Override
     public HttpResponse<?> generateResponse(RequestLine requestLine, Set<HttpHeader> headers, byte[] body) throws HttpException {

@@ -1,6 +1,6 @@
-package br.com.leonardo.client;
+package br.com.leonardo.io;
 
-import br.com.leonardo.client.output.ClientHttpWriter;
+import br.com.leonardo.io.output.HttpWriter;
 import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.HttpStatusCode;
@@ -12,15 +12,15 @@ import java.io.OutputStream;
 import java.util.Set;
 
 @Slf4j
-public class ClientIOErrorHandler {
+public class ConnectionErrorHandler {
 
     public static void dispatchHttpException(OutputStream outputStream,
-                                       ClientHttpWriter clientHttpWriter,
+                                       HttpWriter httpWriter,
                                        RequestLine requestLine,
                                        Set<HttpHeader> headers,
                                        HttpException e) throws IOException {
         log.error("Something went wrong", e);
-        clientHttpWriter
+        httpWriter
                 .writeResponse(
                         outputStream,
                         null,
@@ -31,12 +31,12 @@ public class ClientIOErrorHandler {
     }
 
     public static void dispatchException(OutputStream outputStream,
-                                   ClientHttpWriter clientHttpWriter,
+                                   HttpWriter httpWriter,
                                    RequestLine requestLine,
                                    Set<HttpHeader> headers,
                                    Exception e) throws IOException {
         log.error("Something unexpected went wrong", e);
-        clientHttpWriter.writeResponse(
+        httpWriter.writeResponse(
                 outputStream,
                 null,
                 requestLine,

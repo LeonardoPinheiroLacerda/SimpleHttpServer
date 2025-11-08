@@ -1,4 +1,4 @@
-package br.com.leonardo.client.output;
+package br.com.leonardo.io.output;
 
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.HttpStatusCode;
@@ -9,7 +9,7 @@ import br.com.leonardo.util.ContentNegotiationUtil;
 import java.io.IOException;
 import java.util.Set;
 
-public class StaticClientHttpResponseWriter implements ClientHttpWriter {
+public class StaticHttpResponseWriter implements HttpWriter {
 
     @Override
     public HttpResponse<?> generateResponse(RequestLine requestLine, Set<HttpHeader> headers, byte[] body) {

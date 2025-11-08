@@ -1,17 +1,21 @@
-package br.com.leonardo.parser;
+package br.com.leonardo.parser.factory;
 
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.RequestLine;
+import br.com.leonardo.parser.RequestBodyParser;
+import br.com.leonardo.parser.RequestHeaderParser;
+import br.com.leonardo.parser.RequestLineParser;
+import br.com.leonardo.parser.factory.model.HttpRequestData;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Set;
 
 @Slf4j
-public class HttpRequestParser {
+public class HttpRequestFactory {
 
-    private HttpRequestParser() {}
+    private HttpRequestFactory() {}
 
-    public static HttpRequestData parseHttpRequest(String clientRawRequest) {
+    public static HttpRequestData fromRawRequest(String clientRawRequest) {
         RequestLine requestLine = RequestLineParser.parseRequestLine(clientRawRequest);
         Set<HttpHeader> headers = RequestHeaderParser.parseRequestHeaders(clientRawRequest);
         byte[] body = RequestBodyParser.parseRequestBody(clientRawRequest);

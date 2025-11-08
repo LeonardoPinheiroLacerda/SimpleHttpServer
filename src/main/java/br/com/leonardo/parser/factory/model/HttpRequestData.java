@@ -1,4 +1,4 @@
-package br.com.leonardo.parser;
+package br.com.leonardo.parser.factory.model;
 
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.RequestLine;

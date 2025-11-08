@@ -12,7 +12,7 @@ public class RequestHeaderParser {
     private final static Pattern pattern = Pattern.compile("^(.+):\\s(.+)$", Pattern.MULTILINE);
     private final static String doubleCrlf = "\r\n\r\n";
 
-    protected static Set<HttpHeader> parseRequestHeaders(String rawRequest) {
+    public static Set<HttpHeader> parseRequestHeaders(String rawRequest) {
 
         Set<HttpHeader> headers = new HashSet<>();
 

@@ -1,4 +1,4 @@
-package br.com.leonardo.util;
+package br.com.leonardo.observability;
 
 
 import br.com.leonardo.http.HttpHeader;
@@ -7,12 +7,12 @@ import org.slf4j.MDC;
 import java.util.Set;
 import java.util.UUID;
 
-public class TraceIdUtil {
+public class TraceIdLifeCycleHandler {
 
     private final static String MDC_NAME = "traceId";
     private final static String HEADER_NAME = "X-Trace-Id";
 
-    private TraceIdUtil() {}
+    private TraceIdLifeCycleHandler() {}
 
     public static void initializeTraceId() {
         MDC.put(MDC_NAME, UUID.randomUUID().toString());

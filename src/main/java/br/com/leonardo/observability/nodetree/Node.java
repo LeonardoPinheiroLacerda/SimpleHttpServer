@@ -1,4 +1,4 @@
-package br.com.leonardo.logger;
+package br.com.leonardo.observability.nodetree;
 
 import lombok.Getter;
 

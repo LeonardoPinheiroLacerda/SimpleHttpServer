@@ -5,8 +5,8 @@ import br.com.leonardo.exception.ServerInitializationException;
 import br.com.leonardo.http.context.HttpEndpoint;
 import br.com.leonardo.http.context.HttpEndpointContext;
 import br.com.leonardo.http.middleware.Middleware;
-import br.com.leonardo.logger.Node;
-import br.com.leonardo.logger.TreeNodeLogger;
+import br.com.leonardo.observability.nodetree.Node;
+import br.com.leonardo.observability.nodetree.TreeNodeLogger;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 

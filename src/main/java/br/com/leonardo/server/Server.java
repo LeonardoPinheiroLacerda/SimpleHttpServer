@@ -1,7 +1,7 @@
 package br.com.leonardo.server;
 
 import br.com.leonardo.annotation.scanner.EndpointScanner;
-import br.com.leonardo.client.ClientIOHandler;
+import br.com.leonardo.io.ConnectionIOHandler;
 import br.com.leonardo.config.ApplicationProperties;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,7 +33,7 @@ public class Server implements AutoCloseable {
             try {
                 Socket client = serverSocket.accept();
                 log.trace("Accepted client from {}", client.getRemoteSocketAddress());
-                executorService.submit(new ClientIOHandler(client));
+                executorService.submit(new ConnectionIOHandler(client));
                 log.trace("Submitted client IO task for {}", client.getRemoteSocketAddress());
             } catch (SocketException e) {
                 if (!isRunning) {

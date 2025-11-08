@@ -1,17 +1,17 @@
-package br.com.leonardo.client.output;
+package br.com.leonardo.io.output;
 
 import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.response.HttpResponse;
 import br.com.leonardo.util.ContentNegotiationUtil;
-import br.com.leonardo.util.TraceIdUtil;
+import br.com.leonardo.observability.TraceIdLifeCycleHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
 
-public interface ClientHttpWriter {
+public interface HttpWriter {
 
     default String writeResponse(OutputStream outputStream,
                                  HttpResponse<?> response,
@@ -58,7 +58,7 @@ public interface ClientHttpWriter {
         stringBuilder.append("\r\n");
 
         //Headers
-        TraceIdUtil.addHeader(response.getHeaders());
+        TraceIdLifeCycleHandler.addHeader(response.getHeaders());
         response
                 .getHeaders()
                 .forEach(header -> {
@@ -76,7 +76,7 @@ public interface ClientHttpWriter {
         //Write Body
         outputStream.write(bodyBytes);
 
-        if (this instanceof ApiClientHttpResponseWriter) {
+        if (this instanceof ApiHttpResponseWriter) {
             stringBuilder.append(new String(bodyBytes));
         } else {
             stringBuilder.append("[binary data]");

@@ -1,4 +1,4 @@
-package br.com.leonardo.client.input;
+package br.com.leonardo.io.input;
 
 import br.com.leonardo.config.ApplicationProperties;
 import br.com.leonardo.exception.HttpException;
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Slf4j
-public class ClientHttpRequestReader {
+public class HttpRequestReader {
 
     public static String readRequest(InputStream inputStream) {
         try {
