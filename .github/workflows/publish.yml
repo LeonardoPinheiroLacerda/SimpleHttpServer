@@ -1,0 +1,31 @@
+name: Publish to Maven Central (Central Portal)
+
+on:
+  push:
+    tags:
+      - 'v*' # Ex: v1.0.0 dispara publicação
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Build package
+        run: mvn clean package
+
+      - name: Publish to Maven Central
+        uses: sonatype-nexus-community/actions/publish-central@v1
+        with:
+          username: ${{ secrets.CENTRAL_USERNAME }}
+          token: ${{ secrets.CENTRAL_TOKEN }}
+          artifact-path: "target/*.jar"

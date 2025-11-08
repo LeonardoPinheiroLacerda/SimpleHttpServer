@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>br.com.leonardo</groupId>
+    <groupId>io.github.LeonardoPinheiroLacerda</groupId>
     <artifactId>SimpleHttpServer</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
@@ -96,7 +96,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -115,4 +114,24 @@
             </plugin>
         </plugins>
     </build>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Leonardo Pinheiro Lacerda</name>
+            <url>https://github.com/LeonardoPinheiroLacerda</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/LeonardoPinheiroLacerda/SimpleHttpServer.git</connection>
+        <developerConnection>scm:git:ssh://github.com/LeonardoPinheiroLacerda/SimpleHttpServer.git</developerConnection>
+        <url>https://github.com/LeonardoPinheiroLacerda/SimpleHttpServer</url>
+    </scm>
 </project>

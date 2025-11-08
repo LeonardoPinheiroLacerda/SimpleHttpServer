@@ -2,27 +2,24 @@ package br.com.leonardo.annotation.scanner;
 
 import br.com.leonardo.annotation.Endpoint;
 import br.com.leonardo.exception.ServerInitializationException;
-import br.com.leonardo.http.context.HttpEndpoint;
-import br.com.leonardo.http.context.HttpEndpointContext;
+import br.com.leonardo.router.core.HttpEndpoint;
+import br.com.leonardo.router.core.HttpEndpointResolver;
 import br.com.leonardo.http.middleware.Middleware;
-import br.com.leonardo.logger.Node;
-import br.com.leonardo.logger.TreeNodeLogger;
+import br.com.leonardo.observability.nodetree.Node;
+import br.com.leonardo.observability.nodetree.TreeNodeLogger;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
 
 @Slf4j
-public class EndpointScanner {
+public record EndpointScanner(
+        HttpEndpointResolver resolver
+) {
 
-    private EndpointScanner() {
-    }
-
-    public static void scan(Class<?> clazz) {
+    public void scan(Class<?> clazz) {
         final String pack = clazz.getPackage().getName();
         final Reflections reflections = new Reflections(pack);
-
-        HttpEndpointContext context = HttpEndpointContext.getInstance();
 
         log.info("Scanning project");
         final Node root = new Node("Scanning package " + pack);
@@ -34,7 +31,7 @@ public class EndpointScanner {
 
 
                     final Node endpointNode = new Node(endpoint.getName());
-                    final Node uriNode =    new Node("URL:        " + annotation.url());
+                    final Node uriNode = new Node("URL:        " + annotation.url());
                     final Node methodNode = new Node("Method:     " + annotation.method().name());
                     endpointNode.addChild(uriNode);
                     endpointNode.addChild(methodNode);
@@ -60,7 +57,7 @@ public class EndpointScanner {
 
                         }
 
-                        context.add(httpEndpoint);
+                        resolver.add(httpEndpoint);
                         root.addChild(endpointNode);
 
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException |

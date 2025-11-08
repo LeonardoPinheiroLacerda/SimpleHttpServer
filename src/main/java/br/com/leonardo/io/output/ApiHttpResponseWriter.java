@@ -1,0 +1,61 @@
+package br.com.leonardo.io.output;
+
+import br.com.leonardo.exception.HttpException;
+import br.com.leonardo.http.HttpHeader;
+import br.com.leonardo.http.HttpStatusCode;
+import br.com.leonardo.http.RequestLine;
+import br.com.leonardo.parser.factory.model.HttpRequestData;
+import br.com.leonardo.router.core.HttpEndpoint;
+import br.com.leonardo.router.core.HttpEndpointResolver;
+import br.com.leonardo.http.response.HttpResponse;
+import br.com.leonardo.router.core.HttpEndpointWrapper;
+import br.com.leonardo.router.core.HttpEndpointWrapperFactory;
+import br.com.leonardo.util.ContentNegotiationUtil;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+import java.util.Optional;
+import java.util.Set;
+
+@Slf4j
+public record ApiHttpResponseWriter (
+        HttpEndpointResolver resolver
+) implements HttpWriter {
+
+    @Override
+    public HttpResponse<?> generateResponse(HttpRequestData requestData) throws HttpException {
+
+        final HttpEndpoint<?, ?> httpEndpoint = resolver.get(requestData)
+                .orElseThrow(() -> new HttpException("No handler were found for this endpoint",
+                        HttpStatusCode.NOT_FOUND,
+                        requestData.requestLine().uri())
+                );
+
+        final HttpEndpointWrapper<?, ?> httpEndpointWrapper = HttpEndpointWrapperFactory
+                .create(httpEndpoint, requestData);
+
+        httpEndpointWrapper.runMiddlewares();
+
+        try {
+            return httpEndpointWrapper.createResponse();
+        } catch (IOException e) {
+            throw new HttpException(e.getMessage(),
+                    HttpStatusCode.INTERNAL_SERVER_ERROR,
+                    requestData.requestLine().uri()
+            );
+        }
+
+    }
+
+    @Override
+    public byte[] getBody(RequestLine requestLine,
+                          Set<HttpHeader> headers,
+                          HttpResponse<?> response) throws IOException {
+        final HttpHeader acceptHeader = ContentNegotiationUtil.resolveSupportedAcceptHeader(headers);
+
+        byte[] bodyBytes = ContentNegotiationUtil.serializePlainBody(response.getBody(), acceptHeader);
+        ContentNegotiationUtil.setContentTypeAndContentLength(acceptHeader, bodyBytes, response);
+
+        return bodyBytes;
+    }
+}

@@ -12,7 +12,7 @@ public class RequestLineParser {
 
     private static final Pattern pattern = Pattern.compile("^(OPTIONS|GET|HEAD|POST|PUT|DELETE|TRACE|CONNECT)\\s(/.*)\\s(HTTP/[0-9]\\.[0-9])$", Pattern.MULTILINE);
 
-    protected static RequestLine parseRequestLine(String rawRequest) {
+    public static RequestLine parseRequestLine(String rawRequest) {
 
         Matcher matcher = pattern.matcher(rawRequest);
 

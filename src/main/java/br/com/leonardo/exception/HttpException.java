@@ -25,6 +25,18 @@ public class HttpException extends RuntimeException {
         this.path = path;
     }
 
+    public HttpException(String message,
+                         HttpStatusCode statusCode,
+                         String path,
+                         Throwable cause) {
+        super(message, cause);
+
+        this.message = message;
+        this.statusCode = statusCode;
+        this.timestamp = System.currentTimeMillis();
+        this.path = path;
+    }
+
     public Map<String, Object> responseBody() {
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("message", this.message);
