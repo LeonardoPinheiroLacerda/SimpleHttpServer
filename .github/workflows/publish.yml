@@ -63,23 +63,18 @@ jobs:
           git tag ${{ steps.version.outputs.tag }}
           git push origin ${{ steps.version.outputs.tag }}
 
+      - name: Import GPG key
+        run: |
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
+          echo "trusted-key $(gpg --list-keys --with-colons | grep pub | cut -d: -f5)" >> ~/.gnupg/gpg.conf
+          gpg --list-secret-keys
+
+      - name: Publish
+        run: mvn -B clean deploy -DskipTests -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
           name: "Release ${{ steps.version.outputs.tag }}"
           generate_release_notes: true
-
-      - name: Import GPG key
-        run: |
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
-          echo "trusted-key $(gpg --list-keys --with-colons | grep pub | cut -d: -f5)" >> ~/.gnupg/gpg.conf
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-
-      - name: Verify GPG import
-        run: gpg --list-secret-keys
-
-      - name: Publish to Maven Central
-        run: |
-          mvn -B deploy -DskipTests
