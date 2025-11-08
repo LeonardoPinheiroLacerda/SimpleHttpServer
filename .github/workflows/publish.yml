@@ -56,4 +56,8 @@ jobs:
           generate_release_notes: true
 
       - name: Publish to Maven Central
-        run: mvn -B clean deploy -DskipTests -Dcentral.username=${{ secrets.CENTRAL_USERNAME }} -Dcentral.token=${{ secrets.CENTRAL_TOKEN }}
+        run: |
+          mvn -B deploy -DskipTests \
+            -Dcentral.username=${{ secrets.CENTRAL_USERNAME }} \
+            -Dcentral.token=${{ secrets.CENTRAL_TOKEN }} \
+            -Dcentral.publisher.serverId=central
