@@ -68,9 +68,8 @@ jobs:
 
 
       - name: Build and publish
-        run: mvn -B clean deploy -DskipTests
-        env:
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: mvn -B clean deploy -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} -DskipTests
+
 
       - name: Set up Git
         run: |
