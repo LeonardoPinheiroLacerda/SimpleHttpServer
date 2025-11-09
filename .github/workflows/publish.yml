@@ -69,7 +69,6 @@ jobs:
       - name: Build and publish (safe GPG passphrase)
         run: |
           # Salva passphrase num arquivo temporário seguro
-          echo "${{ secrets.GPG_PASSPHRASE }}" > pass.txt
           printf '%s' ${{ secrets.GPG_PASSPHRASE }} | base64 --decode
           chmod 600 pass.txt
       
