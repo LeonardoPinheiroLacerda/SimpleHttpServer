@@ -49,3 +49,10 @@ jobs:
             -Dsonar.organization=leonardopinheirolacerda \
             -Dsonar.projectKey=LeonardoPinheiroLacerda_SimpleHttpServer \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+
+      - name: SonarQube Quality Gate
+        uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
+        with:
+          scanMetadataReportFile: .scannerwork/report-task.txt
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
