@@ -1,4 +1,4 @@
-name: Release and Publish
+name: Publish and Release
 
 on:
   push:
@@ -6,9 +6,41 @@ on:
       - main
 
 jobs:
-  release:
+
+  verify-release:
+    name: Verify Release
+    runs-on: ubuntu-latest
+    environment: release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from pom.xml
+        id: version
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "Versão encontrada no pom.xml: $VERSION"
+          TAG="v$VERSION"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Check if release already exists
+        id: check_release
+        run: |
+          if gh release view "${{ steps.version.outputs.tag }}" >/dev/null 2>&1; then
+            echo "⚠️ Release ${{ steps.version.outputs.tag }} já existe!"
+            exit 1
+          else
+            echo "✅ Release ${{ steps.version.outputs.tag }} não existe, pode prosseguir."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+
+  publish:
     name: Create Tag and Publish
     runs-on: ubuntu-latest
+    needs: verify-release
     environment: release
 
     permissions:
@@ -64,8 +96,17 @@ jobs:
           
       - name: Build and publish (safe GPG passphrase)
         run: |
-          mvn -B clean deploy -DskipTests -Dgpg.passphrase="$(printf '%s' ${{ secrets.GPG_PASSPHRASE }} | base64 --decode)"
+          mvn -B clean deploy \
+           -DskipTests \
+           -Dgpg.passphrase="$(printf '%s' ${{ secrets.GPG_PASSPHRASE }} | base64 --decode)"
+           -Prelease
 
+  release:
+    needs: publish
+    runs-on: ubuntu-latest
+    environment: release
+
+    steps:
       - name: Set up Git
         run: |
           git config user.name "LeonardoPinheiroLacerda"
@@ -81,13 +122,13 @@ jobs:
 
       - name: Create Git tag
         run: |
-          git tag ${{ steps.version.outputs.tag }}
-          git push origin ${{ steps.version.outputs.tag }}
+          git tag ${{ needs.verify-release.outputs.tag  }}
+          git push origin ${{ needs.verify-release.outputs.tag  }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.version.outputs.tag }}
-          name: "Release ${{ steps.version.outputs.tag }}"
+          tag_name: ${{ needs.verify-release.outputs.tag  }}
+          name: "Release ${{ needs.verify-release.outputs.tag  }}"
           generate_release_notes: true
 
