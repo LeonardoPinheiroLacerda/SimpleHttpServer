@@ -26,7 +26,6 @@ public class Server implements AutoCloseable {
         this.serverSocket = new ServerSocket(ApplicationProperties.getPort());
         this.executorService = Executors.newVirtualThreadPerTaskExecutor();
         this.resolver = resolver;
-
     }
 
     public void start() {
@@ -40,15 +39,11 @@ public class Server implements AutoCloseable {
                 executorService.submit(new ConnectionIOHandler(client, resolver));
                 log.trace("Submitted client IO task for {}", client.getRemoteSocketAddress());
             } catch (SocketException e) {
-                if (!isRunning) {
-                    log.info("Server socket closed, shutting down.");
-                } else {
-                    log.error("SocketException while accepting connections", e);
-                }
+                log.error("SocketException while accepting connections", e);
+                isRunning = false;
             } catch (IOException e) {
-                if (isRunning) {
-                    log.error("I/O error when accepting connections", e);
-                }
+                log.error("I/O error when accepting connections", e);
+                isRunning = false;
             }
         }
     }

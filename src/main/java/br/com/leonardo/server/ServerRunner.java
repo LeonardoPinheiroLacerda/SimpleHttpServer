@@ -1,6 +1,7 @@
 package br.com.leonardo.server;
 
 import br.com.leonardo.annotation.scanner.EndpointScanner;
+import br.com.leonardo.exception.ServerInitializationException;
 import br.com.leonardo.router.core.HttpEndpointResolver;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +33,7 @@ public class ServerRunner {
         try (Server server = new Server(resolver)){
             server.start();
         } catch (IOException e) {
-            log.error("Failed to start server", e);
+            throw new ServerInitializationException(e.getMessage());
         }
 
     }
