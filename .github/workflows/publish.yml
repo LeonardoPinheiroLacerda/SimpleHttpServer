@@ -1,9 +1,5 @@
 name: Release and Publish
 
-env:
-  ACTIONS_RUNNER_DEBUG: true
-  ACTIONS_STEP_DEBUG: true
-
 on:
   push:
     branches:
@@ -68,15 +64,7 @@ jobs:
           
       - name: Build and publish (safe GPG passphrase)
         run: |
-          # Salva passphrase num arquivo temporário seguro
-          printf '%s' ${{ secrets.GPG_PASSPHRASE }} | base64 --decode
-          chmod 600 pass.txt
-      
-          # Usa o arquivo como fonte da senha
-          mvn -B clean deploy -DskipTests -Dgpg.passphrase="$(cat pass.txt)"
-      
-          # Remove após o uso
-          shred -u pass.txt
+          mvn -B clean deploy -DskipTests -Dgpg.passphrase="$(printf '%s' ${{ secrets.GPG_PASSPHRASE }} | base64 --decode)"
 
       - name: Set up Git
         run: |
