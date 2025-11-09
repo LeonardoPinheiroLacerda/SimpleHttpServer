@@ -2,13 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.LeonardoPinheiroLacerda</groupId>
+    <groupId>io.github.leonardopinheirolacerda</groupId>
     <artifactId>SimpleHttpServer</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>HttpServer</name>
     <url>http://maven.apache.org</url>
+    <description>This project is an implementation of an HTTP Server using only vanilla Java</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
