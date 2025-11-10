@@ -39,13 +39,6 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Run Tests and Coverage
-        run: mvn clean verify -Pcoverage
-
-      - name: Verify jacoco.xml
-        run: |
-          cat target/site/jacoco/jacoco.xml
-
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -54,7 +47,7 @@ jobs:
             -Pcoverage \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=leonardopinheirolacerda \
-            -Dsonar.projectKey=LeonardoPinheiroLacerda_FastLeaf
+            -Dsonar.projectKey=LeonardoPinheiroLacerda_FastLeaf \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
       - name: Find Sonar report-task.txt
