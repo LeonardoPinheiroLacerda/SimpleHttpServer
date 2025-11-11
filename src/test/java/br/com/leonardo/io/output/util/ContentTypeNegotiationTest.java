@@ -256,8 +256,11 @@ class ContentTypeNegotiationTest {
         final String uri = "/index.html";
 
         //When + Then
-        Assertions.catchIOException(() -> underTest.serializeStaticBody(uri));
+        final IOException ioException = Assertions.catchIOException(() -> underTest.serializeStaticBody(uri));
 
+        Assertions
+                .assertThat(ioException)
+                .isNotNull();
     }
 
 }
