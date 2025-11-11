@@ -312,8 +312,8 @@
     </developers>
 
     <scm>
-        <connection>scm:git:https://github.com/LeonardoPinheiroLacerda/SimpleHttpServer.git</connection>
-        <developerConnection>scm:git:ssh://github.com/LeonardoPinheiroLacerda/SimpleHttpServer.git</developerConnection>
-        <url>https://github.com/LeonardoPinheiroLacerda/SimpleHttpServer</url>
+        <connection>scm:git:https://github.com/LeonardoPinheiroLacerda/FastLeaf.git</connection>
+        <developerConnection>scm:git:ssh://github.com/LeonardoPinheiroLacerda/FastLeaf.git</developerConnection>
+        <url>https://github.com/LeonardoPinheiroLacerda/FastLeaf</url>
     </scm>
 </project>
