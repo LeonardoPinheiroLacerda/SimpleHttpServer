@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class QueryParameterExtractor {
 
+    private QueryParameterExtractor() {}
+
     public static QueryParameterMap extract(RequestLine requestLine) {
 
         final String url = requestLine.uri();

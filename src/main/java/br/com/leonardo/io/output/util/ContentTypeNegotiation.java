@@ -60,7 +60,7 @@ public class ContentTypeNegotiation {
         };
     }
 
-    public Boolean existsStatic(String uri) {
+    public boolean existsStatic(String uri) {
         final String path = ApplicationProperties.getStaticContentPath() + uri;
         final ClassLoader classLoader = ContentTypeNegotiation.class.getClassLoader();
         return classLoader.getResource(path) != null;

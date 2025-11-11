@@ -9,6 +9,8 @@ import java.util.Set;
 
 public class HeaderExtractor {
 
+    private HeaderExtractor() {}
+
     public static HeaderMap extract(Set<HttpHeader> headers) {
         Map<String, String> headerMap = new HashMap<>();
         headers.forEach(header -> headerMap.put(header.name(), header.value()));

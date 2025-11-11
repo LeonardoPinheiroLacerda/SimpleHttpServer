@@ -14,6 +14,8 @@ import java.util.Set;
 @Slf4j
 public class ConnectionErrorHandler {
 
+    private ConnectionErrorHandler() {}
+
     public static void dispatchHttpException(OutputStream outputStream,
                                        HttpWriter httpWriter,
                                        RequestLine requestLine,

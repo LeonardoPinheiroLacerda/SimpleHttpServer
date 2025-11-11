@@ -10,11 +10,13 @@ import java.util.regex.Pattern;
 
 public class RequestLineParser {
 
-    private static final Pattern pattern = Pattern.compile("^(OPTIONS|GET|HEAD|POST|PUT|DELETE|TRACE|CONNECT)\\s(/.*)\\s(HTTP/[0-9]\\.[0-9])$", Pattern.MULTILINE);
+    private RequestLineParser() {}
+
+    private static final Pattern PATTERN = Pattern.compile("^(OPTIONS|GET|HEAD|POST|PUT|DELETE|TRACE|CONNECT)\\s(/.*)\\s(HTTP/[0-9]\\.[0-9])$", Pattern.MULTILINE);
 
     public static RequestLine parseRequestLine(String rawRequest) {
 
-        Matcher matcher = pattern.matcher(rawRequest);
+        Matcher matcher = PATTERN.matcher(rawRequest);
 
         if(matcher.find()) {
             String methodStr = matcher.group(1);

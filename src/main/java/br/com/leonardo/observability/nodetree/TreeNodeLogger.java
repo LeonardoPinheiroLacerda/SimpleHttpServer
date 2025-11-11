@@ -11,7 +11,7 @@ public record TreeNodeLogger(Logger logger) {
     }
 
     private void logTree(Node node, String prefix, boolean isLast) {
-        logger.info(prefix + (isLast ? "└── " : "├── ") + node.getLabel());
+        logger.info("{}{}{}", prefix, (isLast ? "└── " : "├── "), node.getLabel());
         List<Node> children = node.getChildren();
         for (int i = 0; i < children.size(); i++) {
             boolean last = i == children.size() - 1;

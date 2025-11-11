@@ -9,8 +9,8 @@ import java.util.UUID;
 
 public class TraceIdLifeCycleHandler {
 
-    private final static String MDC_NAME = "traceId";
-    private final static String HEADER_NAME = "X-Trace-Id";
+    private static final String MDC_NAME = "traceId";
+    private static final String HEADER_NAME = "X-Trace-Id";
 
     private TraceIdLifeCycleHandler() {}
 
@@ -23,7 +23,7 @@ public class TraceIdLifeCycleHandler {
     }
 
     public static String getHeader() {
-        return "%s: %s\r\n"
+        return "%s: %s\r%n"
                 .formatted(HEADER_NAME, getTraceId());
     }
 

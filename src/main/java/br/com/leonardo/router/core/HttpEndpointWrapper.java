@@ -62,4 +62,25 @@ public record HttpEndpointWrapper<I, O> (
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HttpEndpointWrapper<?, ?> that = (HttpEndpointWrapper<?, ?>) o;
+        return endpoint.equals(that.endpoint);
+    }
+
+    @Override
+    public int hashCode() {
+        return endpoint.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "HttpEndpointWrapper{" +
+                "endpoint=" + endpoint +
+                ", body=" + body.length +
+                ", request=" + request +
+                '}';
+    }
 }

@@ -9,16 +9,18 @@ import java.util.regex.Pattern;
 
 public class RequestHeaderParser {
 
-    private final static Pattern pattern = Pattern.compile("^(.+):\\s(.+)$", Pattern.MULTILINE);
-    private final static String doubleCrlf = "\r\n\r\n";
+    private RequestHeaderParser() {}
+
+    private static final Pattern PATTERN = Pattern.compile("^([^:\\r\\n]+):\\s*(.+)$", Pattern.MULTILINE);
+    private static final String DOUBLE_CRLF = "\r\n\r\n";
 
     public static Set<HttpHeader> parseRequestHeaders(String rawRequest) {
 
         Set<HttpHeader> headers = new HashSet<>();
 
-        final String[] chunks = rawRequest.split(doubleCrlf);
+        final String[] chunks = rawRequest.split(DOUBLE_CRLF);
 
-        final Matcher matcher = pattern.matcher(chunks[0]);
+        final Matcher matcher = PATTERN.matcher(chunks[0]);
 
         while (matcher.find()) {
             final String headerName = matcher.group(1);

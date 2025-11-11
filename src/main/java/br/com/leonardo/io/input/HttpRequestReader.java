@@ -11,6 +11,8 @@ import java.io.InputStream;
 @Slf4j
 public class HttpRequestReader {
 
+    private HttpRequestReader() {}
+
     public static String readRequest(InputStream inputStream) {
         try {
             StringBuilder stringBuilder = new StringBuilder();

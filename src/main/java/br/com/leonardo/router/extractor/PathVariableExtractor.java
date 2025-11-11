@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 
 public class PathVariableExtractor {
 
+    private PathVariableExtractor() {}
+
     private static final Pattern pathVariablePattern = Pattern.compile("^\\{(.*)}$");
 
     public static PathVariableMap extract(RequestLine requestLine, HttpEndpoint<?, ?> httpEndpoint) {
