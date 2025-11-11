@@ -1,6 +1,6 @@
-# SimpleHttpServer
+# FastLeaf
 
-O SimpleHttpServer é um framework Java acadêmico, construído com base na especificação [RFC 2616](https://datatracker.ietf.org/doc/html/rfc2616), para simplificar o desenvolvimento de aplicações web, desde o fornecimento de arquivos estáticos até a criação de endpoints RESTful.
+O FastLeaf é um framework Java acadêmico, construído com base na especificação [RFC 2616](https://datatracker.ietf.org/doc/html/rfc2616), para simplificar o desenvolvimento de aplicações web, desde o fornecimento de arquivos estáticos até a criação de endpoints RESTful.
 
 Este guia detalha como utilizar o framework em seus projetos.
 
@@ -113,7 +113,7 @@ Para iniciar, adicione a dependência do framework ao seu `pom.xml`:
 ```xml
 <dependency>
     <groupId>io.github.leonardopinheirolacerda</groupId>
-    <artifactId>SimpleHttpServer</artifactId>
+    <artifactId>fastleaf</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
