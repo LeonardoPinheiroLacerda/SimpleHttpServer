@@ -11,6 +11,11 @@
     <url>http://maven.apache.org</url>
     <description>A lightweight and fast Java framework for building simple HTTP servers and APIs with minimal configuration.</description>
 
+    <organization>
+        <name>Leonardo Pinheiro Lacerda</name>
+        <url>https://raw.githubusercontent.com/LeonardoPinheiroLacerda/FastLeaf/refs/heads/main/docs/icon.png</url>
+    </organization>
+
     <properties>
         <sonar.organization>leonardopinheirolacerda</sonar.organization>
         <sonar.coverage.jacoco.xmlReportPaths>../app-it/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
