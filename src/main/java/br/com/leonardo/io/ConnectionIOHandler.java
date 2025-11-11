@@ -1,5 +1,6 @@
 package br.com.leonardo.io;
 
+import br.com.leonardo.io.output.util.ContentTypeNegotiation;
 import br.com.leonardo.router.core.HttpEndpointResolver;
 import br.com.leonardo.io.input.HttpRequestReader;
 import br.com.leonardo.io.output.HttpWriter;
@@ -61,7 +62,8 @@ public record ConnectionIOHandler(
         final RequestLine requestLine = requestData.requestLine();
         final Set<HttpHeader> headers = requestData.headers();
 
-        final HttpWriter httpWriter = HttpWriterFactory.create(requestLine, resolver);
+        final ContentTypeNegotiation contentTypeNegotiation = new ContentTypeNegotiation();
+        final HttpWriter httpWriter = HttpWriterFactory.create(contentTypeNegotiation, requestLine, resolver);
 
         try {
             final HttpResponse<?> response = httpWriter.generateResponse(requestData);

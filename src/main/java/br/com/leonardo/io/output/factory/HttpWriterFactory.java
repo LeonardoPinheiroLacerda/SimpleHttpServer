@@ -12,10 +12,7 @@ public class HttpWriterFactory {
 
     private HttpWriterFactory() {}
 
-    public static HttpWriter create(RequestLine requestLine, HttpEndpointResolver resolver) {
-
-        ContentTypeNegotiation contentTypeNegotiation = new ContentTypeNegotiation();
-
+    public static HttpWriter create(ContentTypeNegotiation contentTypeNegotiation, RequestLine requestLine, HttpEndpointResolver resolver) {
         return contentTypeNegotiation.existsStatic(requestLine.uri()) && ApplicationProperties.staticContentEnabled()
                 ? new StaticHttpResponseWriter()
                 : new ApiHttpResponseWriter(resolver);
