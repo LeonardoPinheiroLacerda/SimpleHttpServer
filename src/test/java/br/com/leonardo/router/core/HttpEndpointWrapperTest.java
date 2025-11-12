@@ -1,10 +1,15 @@
 package br.com.leonardo.router.core;
 
 import br.com.leonardo.exception.HttpException;
+import br.com.leonardo.http.HttpHeader;
+import br.com.leonardo.http.HttpMethod;
+import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.middleware.Middleware;
 import br.com.leonardo.http.request.HttpRequest;
 import br.com.leonardo.http.response.HttpResponse;
+import br.com.leonardo.parser.factory.model.HttpRequestData;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -13,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @ExtendWith(MockitoExtension.class)
 class HttpEndpointWrapperTest {
@@ -175,12 +181,17 @@ class HttpEndpointWrapperTest {
 
         //When
         final HttpResponse<Person> response = personUnderTest.createResponse();
+        final String string = personUnderTest.toString();
 
         //Then
         Assertions
                 .assertThat(response)
                 .isNotNull()
                 .isEqualTo(this.httpPersonResponse);
+
+        Assertions
+                .assertThat(string)
+                .isNotNull();
     }
 
     @Test
@@ -216,4 +227,39 @@ class HttpEndpointWrapperTest {
                 .assertThat(httpException)
                 .isNotNull();
     }
+
+    @Test
+    void shouldBeEquals() {
+
+        //Given
+        final byte[] bytes = "anyBody".getBytes();
+
+        //When
+        HttpEndpointWrapper<String, String> underTest2 = new HttpEndpointWrapper<>(httpEndpoint, bytes, httpRequest);
+        HttpEndpointWrapper<String, String> underTest3 = new HttpEndpointWrapper<>(httpEndpoint, bytes, httpRequest);
+
+        //Then
+        Assertions
+                .assertThat(underTest2)
+                .isEqualTo(underTest3);
+
+    }
+
+    @Test
+    void shouldBeEqualsUsingHashCode() {
+
+        //Given
+        final byte[] bytes = "anyBody".getBytes();
+
+        //When
+        int underTest2 = new HttpEndpointWrapper<>(httpEndpoint, bytes, httpRequest).hashCode();
+        int underTest3 = new HttpEndpointWrapper<>(httpEndpoint, bytes, httpRequest).hashCode();
+
+        //Then
+        Assertions
+                .assertThat(underTest2)
+                .isEqualTo(underTest3);
+
+    }
+
 }
