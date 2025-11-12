@@ -175,12 +175,17 @@ class HttpEndpointWrapperTest {
 
         //When
         final HttpResponse<Person> response = personUnderTest.createResponse();
+        final String string = personUnderTest.toString();
 
         //Then
         Assertions
                 .assertThat(response)
                 .isNotNull()
                 .isEqualTo(this.httpPersonResponse);
+
+        Assertions
+                .assertThat(string)
+                .isNotNull();
     }
 
     @Test
@@ -216,4 +221,39 @@ class HttpEndpointWrapperTest {
                 .assertThat(httpException)
                 .isNotNull();
     }
+
+    @Test
+    void shouldBeEquals() {
+
+        //Given
+        final byte[] bytes = "anyBody".getBytes();
+
+        //When
+        HttpEndpointWrapper<String, String> underTest2 = new HttpEndpointWrapper<>(httpEndpoint, bytes, httpRequest);
+        HttpEndpointWrapper<String, String> underTest3 = new HttpEndpointWrapper<>(httpEndpoint, bytes, httpRequest);
+
+        //Then
+        Assertions
+                .assertThat(underTest2)
+                .isEqualTo(underTest3);
+
+    }
+
+    @Test
+    void shouldBeEqualsUsingHashCode() {
+
+        //Given
+        final byte[] bytes = "anyBody".getBytes();
+
+        //When
+        int underTest2 = new HttpEndpointWrapper<>(httpEndpoint, bytes, httpRequest).hashCode();
+        int underTest3 = new HttpEndpointWrapper<>(httpEndpoint, bytes, httpRequest).hashCode();
+
+        //Then
+        Assertions
+                .assertThat(underTest2)
+                .isEqualTo(underTest3);
+
+    }
+
 }

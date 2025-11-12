@@ -3,8 +3,8 @@ package br.com.leonardo.router.extractor;
 import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.http.HttpStatusCode;
 import br.com.leonardo.http.RequestLine;
-import br.com.leonardo.router.core.HttpEndpoint;
 import br.com.leonardo.http.request.map.PathVariableMap;
+import br.com.leonardo.router.core.HttpEndpoint;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +12,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PathVariableExtractor {
+
+    private PathVariableExtractor() {}
 
     private static final Pattern pathVariablePattern = Pattern.compile("^\\{(.*)}$");
 

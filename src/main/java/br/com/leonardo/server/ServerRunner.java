@@ -10,7 +10,9 @@ import java.io.IOException;
 @Slf4j
 public class ServerRunner {
 
-    private static final String banner = """
+    private ServerRunner() {}
+
+    private static final String BANNER = """
              _____ _                 _        _   _ _____ ___________   _____                         \s
             /  ___(_)               | |      | | | |_   _|_   _| ___ \\ /  ___|                        \s
             \\ `--. _ _ __ ___  _ __ | | ___  | |_| | | |   | | | |_/ / \\ `--.  ___ _ ____   _____ _ __\s
@@ -23,7 +25,7 @@ public class ServerRunner {
 
     public static void serve(Class<?> clazz) {
 
-        System.out.println(banner);
+        log.info("\n{}", BANNER);
 
         final HttpEndpointResolver resolver = new HttpEndpointResolver();
 

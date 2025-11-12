@@ -8,8 +8,8 @@ import java.util.List;
 @Getter
 public class Node {
 
-    private String label;
-    private List<Node> children;
+    private final String label;
+    private final List<Node> children;
 
     public Node(String label) {
         this.label = label;

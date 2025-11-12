@@ -22,7 +22,7 @@ public class HttpRequestFactory {
 
         log.info("Incoming request: {}", requestLine);
         log.trace("Headers parsed: size={}", headers.size());
-        log.trace("Body length: {} bytes", body == null ? 0 : body.length);
+        log.trace("Body length: {} bytes", body.length);
 
         return new HttpRequestData(requestLine, headers, body);
     }

@@ -5,8 +5,8 @@ import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.response.HttpResponse;
 import br.com.leonardo.io.output.util.ContentTypeNegotiation;
-import br.com.leonardo.parser.factory.model.HttpRequestData;
 import br.com.leonardo.observability.TraceIdLifeCycleHandler;
+import br.com.leonardo.parser.factory.model.HttpRequestData;
 
 import java.io.IOException;
 import java.io.OutputStream;

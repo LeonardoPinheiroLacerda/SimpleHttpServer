@@ -1,18 +1,18 @@
 package br.com.leonardo.io;
 
-import br.com.leonardo.io.output.util.ContentTypeNegotiation;
-import br.com.leonardo.router.core.HttpEndpointResolver;
-import br.com.leonardo.io.input.HttpRequestReader;
-import br.com.leonardo.io.output.HttpWriter;
-import br.com.leonardo.io.output.factory.HttpWriterFactory;
 import br.com.leonardo.config.ApplicationProperties;
 import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.response.HttpResponse;
-import br.com.leonardo.parser.factory.model.HttpRequestData;
-import br.com.leonardo.parser.factory.HttpRequestFactory;
+import br.com.leonardo.io.input.HttpRequestReader;
+import br.com.leonardo.io.output.HttpWriter;
+import br.com.leonardo.io.output.factory.HttpWriterFactory;
+import br.com.leonardo.io.output.util.ContentTypeNegotiation;
 import br.com.leonardo.observability.TraceIdLifeCycleHandler;
+import br.com.leonardo.parser.factory.HttpRequestFactory;
+import br.com.leonardo.parser.factory.model.HttpRequestData;
+import br.com.leonardo.router.core.HttpEndpointResolver;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

@@ -1,10 +1,10 @@
 package br.com.leonardo.io;
 
-import br.com.leonardo.io.output.HttpWriter;
 import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.HttpStatusCode;
 import br.com.leonardo.http.RequestLine;
+import br.com.leonardo.io.output.HttpWriter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -13,6 +13,8 @@ import java.util.Set;
 
 @Slf4j
 public class ConnectionErrorHandler {
+
+    private ConnectionErrorHandler() {}
 
     public static void dispatchHttpException(OutputStream outputStream,
                                        HttpWriter httpWriter,

@@ -15,6 +15,8 @@ import java.util.Set;
 
 public class HttpEndpointWrapperFactory {
 
+    private HttpEndpointWrapperFactory() {}
+
     public static HttpEndpointWrapper<?, ?> create(HttpEndpoint<?, ?> httpEndpoint, HttpRequestData requestData) {
 
         final RequestLine requestLine = requestData.requestLine();
