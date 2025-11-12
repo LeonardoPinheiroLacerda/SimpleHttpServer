@@ -25,7 +25,7 @@ public abstract class Middleware {
         } catch (HttpException e) {
             throw new HttpMiddlewareException(e.getMessage(), e.getStatusCode(), e.getPath());
         } catch (Exception e) {
-            throw new HttpMiddlewareException("Something unexpected happened on middlewares", HttpStatusCode.INTERNAL_SERVER_ERROR, request.uri().toString());
+            throw new HttpMiddlewareException("Something unexpected happened on middlewares", HttpStatusCode.INTERNAL_SERVER_ERROR, request.uri());
         }
     }
 

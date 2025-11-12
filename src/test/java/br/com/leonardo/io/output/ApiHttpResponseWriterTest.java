@@ -65,15 +65,9 @@ class ApiHttpResponseWriterTest {
                 .thenReturn("/users");
 
         //Then
-        final HttpException httpException = Assertions
-                .catchThrowableOfType(
-                        HttpException.class,
-                        () -> underTest.generateResponse(requestData)
-                );
-
-        Assertions.assertThat(httpException)
-                .isNotNull();
-
+        Assertions
+                .assertThatThrownBy(() -> underTest.generateResponse(requestData))
+                .isInstanceOf(HttpException.class);
     }
 
     @Test
@@ -97,15 +91,9 @@ class ApiHttpResponseWriterTest {
                 .thenReturn("/users");
 
         //Then
-        final HttpException httpException = Assertions
-                .catchThrowableOfType(
-                        HttpException.class,
-                        () -> underTest.generateResponse(requestData)
-                );
-
-        Assertions.assertThat(httpException)
-                .isNotNull();
-
+        Assertions
+                .assertThatThrownBy(() -> underTest.generateResponse(requestData))
+                .isInstanceOf(HttpException.class);
 
     }
 

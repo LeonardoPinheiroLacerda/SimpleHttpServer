@@ -14,7 +14,7 @@ import java.io.InputStream;
 class HttpRequestReaderTest {
 
     @Test
-    void shouldReadRequest() throws Exception {
+    void shouldReadRequest() {
         try (MockedStatic<ApplicationProperties> applicationProperties = Mockito.mockStatic(ApplicationProperties.class)) {
             //Given
             String requestContent = "GET /api/test HTTP/1.1\r\nHost: localhost\r\n\r\n";
@@ -36,7 +36,7 @@ class HttpRequestReaderTest {
     }
 
     @Test
-    void shouldReadRequestWithLoggingEnabled() throws Exception {
+    void shouldReadRequestWithLoggingEnabled() {
         try (MockedStatic<ApplicationProperties> applicationProperties = Mockito.mockStatic(ApplicationProperties.class)) {
             //Given
             String requestContent = "GET /api/test HTTP/1.1\r\nHost: localhost\r\n\r\n";

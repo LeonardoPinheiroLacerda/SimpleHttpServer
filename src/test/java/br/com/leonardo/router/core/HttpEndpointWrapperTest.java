@@ -211,15 +211,11 @@ class HttpEndpointWrapperTest {
 
 
         //When + Then
-        final HttpException httpException = Assertions
-                .catchThrowableOfType(() ->
-                                personUnderTest.createResponse(),
-                        HttpException.class
-                );
 
         Assertions
-                .assertThat(httpException)
-                .isNotNull();
+                .assertThatThrownBy(personUnderTest::createResponse)
+                .isInstanceOf(HttpException.class);
+
     }
 
     @Test

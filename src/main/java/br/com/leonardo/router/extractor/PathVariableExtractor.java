@@ -23,12 +23,12 @@ public class PathVariableExtractor {
         final String[] requestUriChunks = requestUri.split("/");
 
         final String handlerUri = httpEndpoint.getUri();
-        final String[] HandlerUriChunks = handlerUri.split("/");
+        final String[] handlerUriChunks = handlerUri.split("/");
 
         final Map<String, String> pathVariables = new HashMap<>();
 
-        for (int i = 0; i < HandlerUriChunks.length; i++) {
-            final String endpointPart = HandlerUriChunks[i];
+        for (int i = 0; i < handlerUriChunks.length; i++) {
+            final String endpointPart = handlerUriChunks[i];
             final String requestPart = requestUriChunks[i];
 
             Matcher matcher = pathVariablePattern.matcher(endpointPart);

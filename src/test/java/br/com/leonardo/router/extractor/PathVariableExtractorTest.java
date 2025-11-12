@@ -57,15 +57,10 @@ class PathVariableExtractorTest {
                 .thenReturn("/users/{id}/teste");
 
         //When + Then
-        final HttpException httpException = Assertions
-                .catchThrowableOfType(
-                        () -> PathVariableExtractor.extract(requestLine, httpEndpoint),
-                        HttpException.class
-                );
-
-        Assertions.assertThat(httpException)
-                .isNotNull()
+        Assertions.assertThatThrownBy(() -> PathVariableExtractor.extract(requestLine, httpEndpoint))
+                .isInstanceOf(HttpException.class)
                 .hasMessage("Path variable mismatch");
+
     }
 
 }

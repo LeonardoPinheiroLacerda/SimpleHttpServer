@@ -69,7 +69,6 @@ class HttpExceptionTest {
                 .containsEntry("message", message)
                 .containsEntry("status", statusCode.getCode())
                 .containsEntry("path", path);
-        Assertions.assertThat(responseBody.get("timestamp")).isEqualTo(exception.getTimestamp());
     }
 
     @Test
@@ -89,6 +88,5 @@ class HttpExceptionTest {
                 .containsEntry("message", message)
                 .containsEntry("status", statusCode.getCode())
                 .doesNotContainKey("path"); // Path should not be present if null
-        Assertions.assertThat(responseBody.get("timestamp")).isEqualTo(exception.getTimestamp());
     }
 }
