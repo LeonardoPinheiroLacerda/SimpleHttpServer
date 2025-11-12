@@ -1,7 +1,7 @@
 package br.com.leonardo.parser.factory.model;
 
 import br.com.leonardo.http.HttpHeader;
-import br.com.leonardo.http.HttpMethod;
+import br.com.leonardo.enums.HttpMethod;
 import br.com.leonardo.http.RequestLine;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Sets;

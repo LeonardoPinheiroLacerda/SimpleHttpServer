@@ -1,6 +1,6 @@
 package br.com.leonardo.annotation;
 
-import br.com.leonardo.http.HttpMethod;
+import br.com.leonardo.enums.HttpMethod;
 import br.com.leonardo.http.middleware.Middleware;
 
 import java.lang.annotation.ElementType;

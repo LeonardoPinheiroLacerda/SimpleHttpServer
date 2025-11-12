@@ -1,6 +1,6 @@
 package br.com.leonardo.exception;
 
-import br.com.leonardo.http.HttpStatusCode;
+import br.com.leonardo.enums.HttpStatusCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

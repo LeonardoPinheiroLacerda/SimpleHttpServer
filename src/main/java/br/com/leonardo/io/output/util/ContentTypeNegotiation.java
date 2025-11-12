@@ -2,7 +2,7 @@ package br.com.leonardo.io.output.util;
 
 import br.com.leonardo.config.ApplicationProperties;
 import br.com.leonardo.http.HttpHeader;
-import br.com.leonardo.http.SupportedStaticContentTypes;
+import br.com.leonardo.enums.SupportedStaticContentTypes;
 import br.com.leonardo.http.response.HttpResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,11 +31,13 @@ public class ContentTypeNegotiation {
     }
 
     public void setContentTypeAndContentLength(HttpHeader acceptHeader, byte[] body, HttpResponse<?> response) {
+
         switch (acceptHeader.value()) {
             case "application/xml" -> response.addHeader("Content-Type", "application/xml");
             case "text/plain" -> response.addHeader("Content-Type", "text/plain");
             default -> response.addHeader("Content-Type", "application/json");
         }
+
         response.addHeader("Content-Length", body.length);
     }
 

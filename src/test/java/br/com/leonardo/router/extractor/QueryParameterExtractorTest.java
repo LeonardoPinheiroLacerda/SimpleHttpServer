@@ -1,6 +1,6 @@
 package br.com.leonardo.router.extractor;
 
-import br.com.leonardo.http.HttpMethod;
+import br.com.leonardo.enums.HttpMethod;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.request.map.QueryParameterMap;
 import org.assertj.core.api.Assertions;

@@ -1,4 +1,4 @@
-package br.com.leonardo.http;
+package br.com.leonardo.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

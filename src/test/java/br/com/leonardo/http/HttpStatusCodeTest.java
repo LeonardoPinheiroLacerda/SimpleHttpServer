@@ -1,5 +1,6 @@
 package br.com.leonardo.http;
 
+import br.com.leonardo.enums.HttpStatusCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

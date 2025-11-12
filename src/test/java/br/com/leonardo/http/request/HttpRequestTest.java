@@ -1,6 +1,6 @@
 package br.com.leonardo.http.request;
 
-import br.com.leonardo.http.HttpMethod;
+import br.com.leonardo.enums.HttpMethod;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.request.map.HeaderMap;
 import br.com.leonardo.http.request.map.PathVariableMap;

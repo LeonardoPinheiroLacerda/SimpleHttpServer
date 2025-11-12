@@ -1,4 +1,4 @@
-package br.com.leonardo.http;
+package br.com.leonardo.enums;
 
 public enum HttpMethod {
     OPTIONS,

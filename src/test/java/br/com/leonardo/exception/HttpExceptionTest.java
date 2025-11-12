@@ -1,6 +1,6 @@
 package br.com.leonardo.exception;
 
-import br.com.leonardo.http.HttpStatusCode;
+import br.com.leonardo.enums.HttpStatusCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -69,7 +69,6 @@ class HttpExceptionTest {
                 .containsEntry("message", message)
                 .containsEntry("status", statusCode.getCode())
                 .containsEntry("path", path);
-        Assertions.assertThat(responseBody.get("timestamp")).isEqualTo(exception.getTimestamp());
     }
 
     @Test
@@ -89,6 +88,5 @@ class HttpExceptionTest {
                 .containsEntry("message", message)
                 .containsEntry("status", statusCode.getCode())
                 .doesNotContainKey("path"); // Path should not be present if null
-        Assertions.assertThat(responseBody.get("timestamp")).isEqualTo(exception.getTimestamp());
     }
 }

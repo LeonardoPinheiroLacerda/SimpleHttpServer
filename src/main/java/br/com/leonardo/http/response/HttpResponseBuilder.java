@@ -1,7 +1,7 @@
 package br.com.leonardo.http.response;
 
 import br.com.leonardo.http.HttpHeader;
-import br.com.leonardo.http.HttpStatusCode;
+import br.com.leonardo.enums.HttpStatusCode;
 
 import java.util.HashSet;
 

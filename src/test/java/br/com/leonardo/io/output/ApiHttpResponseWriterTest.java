@@ -2,7 +2,7 @@ package br.com.leonardo.io.output;
 
 import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.http.HttpHeader;
-import br.com.leonardo.http.HttpStatusCode;
+import br.com.leonardo.enums.HttpStatusCode;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.response.HttpResponse;
 import br.com.leonardo.parser.factory.model.HttpRequestData;
@@ -65,15 +65,9 @@ class ApiHttpResponseWriterTest {
                 .thenReturn("/users");
 
         //Then
-        final HttpException httpException = Assertions
-                .catchThrowableOfType(
-                        HttpException.class,
-                        () -> underTest.generateResponse(requestData)
-                );
-
-        Assertions.assertThat(httpException)
-                .isNotNull();
-
+        Assertions
+                .assertThatThrownBy(() -> underTest.generateResponse(requestData))
+                .isInstanceOf(HttpException.class);
     }
 
     @Test
@@ -97,15 +91,9 @@ class ApiHttpResponseWriterTest {
                 .thenReturn("/users");
 
         //Then
-        final HttpException httpException = Assertions
-                .catchThrowableOfType(
-                        HttpException.class,
-                        () -> underTest.generateResponse(requestData)
-                );
-
-        Assertions.assertThat(httpException)
-                .isNotNull();
-
+        Assertions
+                .assertThatThrownBy(() -> underTest.generateResponse(requestData))
+                .isInstanceOf(HttpException.class);
 
     }
 

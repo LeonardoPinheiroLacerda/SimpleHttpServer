@@ -1,6 +1,6 @@
 package br.com.leonardo.exception;
 
-import br.com.leonardo.http.HttpStatusCode;
+import br.com.leonardo.enums.HttpStatusCode;
 import lombok.Getter;
 
 import java.util.HashMap;

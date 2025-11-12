@@ -1,7 +1,7 @@
 package br.com.leonardo.router.extractor;
 
 import br.com.leonardo.exception.HttpException;
-import br.com.leonardo.http.HttpMethod;
+import br.com.leonardo.enums.HttpMethod;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.request.map.PathVariableMap;
 import br.com.leonardo.router.core.HttpEndpoint;
@@ -57,15 +57,10 @@ class PathVariableExtractorTest {
                 .thenReturn("/users/{id}/teste");
 
         //When + Then
-        final HttpException httpException = Assertions
-                .catchThrowableOfType(
-                        () -> PathVariableExtractor.extract(requestLine, httpEndpoint),
-                        HttpException.class
-                );
-
-        Assertions.assertThat(httpException)
-                .isNotNull()
+        Assertions.assertThatThrownBy(() -> PathVariableExtractor.extract(requestLine, httpEndpoint))
+                .isInstanceOf(HttpException.class)
                 .hasMessage("Path variable mismatch");
+
     }
 
 }

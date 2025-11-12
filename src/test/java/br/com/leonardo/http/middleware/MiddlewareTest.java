@@ -2,8 +2,8 @@ package br.com.leonardo.http.middleware;
 
 import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.exception.HttpMiddlewareException;
-import br.com.leonardo.http.HttpMethod;
-import br.com.leonardo.http.HttpStatusCode;
+import br.com.leonardo.enums.HttpMethod;
+import br.com.leonardo.enums.HttpStatusCode;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.request.HttpRequest;
 import org.assertj.core.api.Assertions;

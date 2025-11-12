@@ -1,8 +1,8 @@
 package br.com.leonardo.parser;
 
 import br.com.leonardo.exception.HttpException;
-import br.com.leonardo.http.HttpMethod;
-import br.com.leonardo.http.HttpStatusCode;
+import br.com.leonardo.enums.HttpMethod;
+import br.com.leonardo.enums.HttpStatusCode;
 import br.com.leonardo.http.RequestLine;
 
 import java.util.regex.Matcher;

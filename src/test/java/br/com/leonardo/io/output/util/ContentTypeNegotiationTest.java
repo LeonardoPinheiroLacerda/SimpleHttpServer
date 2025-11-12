@@ -2,11 +2,13 @@
 package br.com.leonardo.io.output.util;
 
 import br.com.leonardo.http.HttpHeader;
-import br.com.leonardo.http.HttpStatusCode;
+import br.com.leonardo.enums.HttpStatusCode;
 import br.com.leonardo.http.response.HttpResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -17,7 +19,7 @@ class ContentTypeNegotiationTest {
     private ContentTypeNegotiation underTest = new ContentTypeNegotiation();
 
     @Test
-    void shoudResolveSupportedAcceptHeader() {
+    void shouldResolveSupportedAcceptHeader() {
 
         Set<HttpHeader> headers = new HashSet<>();
         headers.add(new HttpHeader("Accept", "application/json"));
@@ -76,7 +78,12 @@ class ContentTypeNegotiationTest {
 
     }
 
-    @Test
+    @ParameterizedTest(name = "ContentTypeNegotiationTest.shouldSetContentTypeAndContentLength: {0} - {1}")
+    @CsvSource({
+            "application/json",
+            "application/xml",
+            "text/plain"
+    })
     void shouldSetContentTypeJsonAndContentLengthToResponse() {
 
         //Given
@@ -88,56 +95,6 @@ class ContentTypeNegotiationTest {
                 .build();
 
         HttpHeader httpHeader = new HttpHeader("Accept", "application/json");
-
-        byte[] body = new byte[4096];
-
-        //When
-        underTest.setContentTypeAndContentLength(httpHeader, body, response);
-
-        //Then
-        Assertions
-                .assertThat(response)
-                .isNotNull();
-
-    }
-
-    @Test
-    void shouldSetContentTypeXmlAndContentLengthToResponse() {
-
-        //Given
-        final HttpResponse<String> response = HttpResponse
-                .<String>builder()
-                .body("helpme")
-                .statusCode(HttpStatusCode.OK)
-                .header("Accept", "application/json")
-                .build();
-
-        HttpHeader httpHeader = new HttpHeader("Accept", "application/xml");
-
-        byte[] body = new byte[4096];
-
-        //When
-        underTest.setContentTypeAndContentLength(httpHeader, body, response);
-
-        //Then
-        Assertions
-                .assertThat(response)
-                .isNotNull();
-
-    }
-
-    @Test
-    void shouldSetContentTypeTextPlainAndContentLengthToResponse() {
-
-        //Given
-        final HttpResponse<String> response = HttpResponse
-                .<String>builder()
-                .body("helpme")
-                .statusCode(HttpStatusCode.OK)
-                .header("Accept", "application/json")
-                .build();
-
-        HttpHeader httpHeader = new HttpHeader("Accept", "text/plain");
 
         byte[] body = new byte[4096];
 
@@ -176,52 +133,18 @@ class ContentTypeNegotiationTest {
 
     }
 
-    @Test
-    void shouldSerializePlainRequestBodyToJson() throws JsonProcessingException {
+    @ParameterizedTest(name = "ContentTypeNegotiationTest.shouldSerializePlainRequestBodyToJson: {0} - {1}")
+    @CsvSource({
+            "application/json, {\"nome\": \"leonardo\"}",
+            "application/xml, <nome>Leonardo</nome>",
+            "text/plain, meu nome é Leonardo"
+    })
+    void shouldSerializePlainRequestBodyToJson(String contentType, String value) throws JsonProcessingException {
 
         //Given
-        HttpHeader httpHeader = new HttpHeader("Accept", "application/json");
+        HttpHeader httpHeader = new HttpHeader("Accept", contentType);
 
-        byte[] body = """
-                {"nome": "leonardo"}""".getBytes();
-
-        //When
-        final byte[] bytes = underTest.serializePlainBody(body, httpHeader);
-
-        //Then
-        Assertions
-                .assertThat(bytes)
-                .isNotNull();
-
-    }
-
-    @Test
-    void shouldSerializePlainRequestBodyToXml() throws JsonProcessingException {
-
-        //Given
-        HttpHeader httpHeader = new HttpHeader("Accept", "application/xml");
-
-        byte[] body = """
-                <nome>Leonardo</nome>""".getBytes();
-
-        //When
-        final byte[] bytes = underTest.serializePlainBody(body, httpHeader);
-
-        //Then
-        Assertions
-                .assertThat(bytes)
-                .isNotNull();
-
-    }
-
-    @Test
-    void shouldSerializePlainRequestBodyToTextPlain() throws JsonProcessingException {
-
-        //Given
-        HttpHeader httpHeader = new HttpHeader("Accept", "text/plain");
-
-        byte[] body = """
-                meu nome é leonardo""".getBytes();
+        byte[] body = value.getBytes();
 
         //When
         final byte[] bytes = underTest.serializePlainBody(body, httpHeader);
@@ -250,9 +173,9 @@ class ContentTypeNegotiationTest {
     }
 
     @Test
-    void shouldSerializeStaticResource() throws IOException {
+    void shouldSerializeStaticResource() {
 
-        //Givin
+        //Given
         final String uri = "/index.html";
 
         //When + Then

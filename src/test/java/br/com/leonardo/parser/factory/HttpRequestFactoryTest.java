@@ -1,6 +1,6 @@
 package br.com.leonardo.parser.factory;
 
-import br.com.leonardo.http.HttpMethod;
+import br.com.leonardo.enums.HttpMethod;
 import br.com.leonardo.parser.factory.model.HttpRequestData;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
