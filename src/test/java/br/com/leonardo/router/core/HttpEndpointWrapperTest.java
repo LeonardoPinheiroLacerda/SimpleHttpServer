@@ -1,15 +1,10 @@
 package br.com.leonardo.router.core;
 
 import br.com.leonardo.exception.HttpException;
-import br.com.leonardo.http.HttpHeader;
-import br.com.leonardo.http.HttpMethod;
-import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.middleware.Middleware;
 import br.com.leonardo.http.request.HttpRequest;
 import br.com.leonardo.http.response.HttpResponse;
-import br.com.leonardo.parser.factory.model.HttpRequestData;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -18,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 @ExtendWith(MockitoExtension.class)
 class HttpEndpointWrapperTest {

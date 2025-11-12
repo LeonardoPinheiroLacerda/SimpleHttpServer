@@ -1,8 +1,8 @@
 package br.com.leonardo.server;
 
-import br.com.leonardo.router.core.HttpEndpointResolver;
-import br.com.leonardo.io.ConnectionIOHandler;
 import br.com.leonardo.config.ApplicationProperties;
+import br.com.leonardo.io.ConnectionIOHandler;
+import br.com.leonardo.router.core.HttpEndpointResolver;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

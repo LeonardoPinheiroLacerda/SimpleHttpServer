@@ -3,8 +3,8 @@ package br.com.leonardo.router.extractor;
 import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.http.HttpStatusCode;
 import br.com.leonardo.http.RequestLine;
-import br.com.leonardo.router.core.HttpEndpoint;
 import br.com.leonardo.http.request.map.PathVariableMap;
+import br.com.leonardo.router.core.HttpEndpoint;
 
 import java.util.HashMap;
 import java.util.Map;

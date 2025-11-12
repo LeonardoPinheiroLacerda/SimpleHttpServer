@@ -5,18 +5,15 @@ import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.HttpStatusCode;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.response.HttpResponse;
-import br.com.leonardo.http.response.HttpResponseBuilder;
 import br.com.leonardo.parser.factory.model.HttpRequestData;
 import br.com.leonardo.router.core.HttpEndpoint;
 import br.com.leonardo.router.core.HttpEndpointResolver;
 import br.com.leonardo.router.core.HttpEndpointWrapper;
-import br.com.leonardo.router.core.HttpEndpointWrapperFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -25,8 +22,6 @@ import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ApiHttpResponseWriterTest {
