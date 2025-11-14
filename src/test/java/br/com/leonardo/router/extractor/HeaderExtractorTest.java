@@ -2,6 +2,7 @@ package br.com.leonardo.router.extractor;
 
 import br.com.leonardo.enums.ContentTypeEnum;
 import br.com.leonardo.enums.HttpHeaderEnum;
+import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.request.map.HeaderMap;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Sets;
@@ -16,8 +17,8 @@ class HeaderExtractorTest {
     void shouldExtractHeaders() {
         //Given
         Set<br.com.leonardo.http.HttpHeader> headers = Sets.set(
-                new br.com.leonardo.http.HttpHeader(HttpHeaderEnum.CONTENT_TYPE.getName(), ContentTypeEnum.APPLICATION_JSON.getType()),
-                new br.com.leonardo.http.HttpHeader(HttpHeaderEnum.ACCEPT.getName(), ContentTypeEnum.APPLICATION_JSON.getType())
+                new HttpHeader(HttpHeaderEnum.CONTENT_TYPE.getName(), ContentTypeEnum.APPLICATION_JSON.getType()),
+                new HttpHeader(HttpHeaderEnum.ACCEPT.getName(), ContentTypeEnum.APPLICATION_JSON.getType())
         );
 
         //When
