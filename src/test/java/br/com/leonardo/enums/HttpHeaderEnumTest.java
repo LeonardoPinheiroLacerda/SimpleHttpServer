@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-class HttpHeaderTest {
+class HttpHeaderEnumTest {
 
     @ParameterizedTest
-    @EnumSource(HttpHeader.class)
-    void ensureAllHttpHeadersHaveNonNullAndNonEmptyName(HttpHeader header) {
+    @EnumSource(HttpHeaderEnum.class)
+    void ensureAllHttpHeadersHaveNonNullAndNonEmptyName(HttpHeaderEnum header) {
         Assertions.assertThat(header.getName())
                 .isNotNull()
                 .isNotBlank();
@@ -18,7 +18,7 @@ class HttpHeaderTest {
     @Test
     void shouldReturnCorrectNameForContentType() {
         // Given
-        HttpHeader header = HttpHeader.CONTENT_TYPE;
+        HttpHeaderEnum header = HttpHeaderEnum.CONTENT_TYPE;
 
         // Then
         Assertions.assertThat(header.getName()).isEqualTo("Content-Type");
@@ -27,7 +27,7 @@ class HttpHeaderTest {
     @Test
     void shouldReturnCorrectNameForAccept() {
         // Given
-        HttpHeader header = HttpHeader.ACCEPT;
+        HttpHeaderEnum header = HttpHeaderEnum.ACCEPT;
 
         // Then
         Assertions.assertThat(header.getName()).isEqualTo("Accept");

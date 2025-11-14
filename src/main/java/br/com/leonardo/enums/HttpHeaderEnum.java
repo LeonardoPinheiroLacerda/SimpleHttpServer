@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum HttpHeader {
+public enum HttpHeaderEnum {
 
     // --- General Headers ---
     CACHE_CONTROL("Cache-Control"),

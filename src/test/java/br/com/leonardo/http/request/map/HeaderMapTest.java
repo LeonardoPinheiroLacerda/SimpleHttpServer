@@ -1,7 +1,7 @@
 package br.com.leonardo.http.request.map;
 
-import br.com.leonardo.enums.ContentType;
-import br.com.leonardo.enums.HttpHeader;
+import br.com.leonardo.enums.ContentTypeEnum;
+import br.com.leonardo.enums.HttpHeaderEnum;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,20 +12,20 @@ class HeaderMapTest {
 
     @Test
     void shouldGetStringValue() {
-        HeaderMap headerMap = new HeaderMap(Map.of(HttpHeader.CONTENT_TYPE.getName(), ContentType.APPLICATION_JSON.getType()));
-        Assertions.assertThat(headerMap.getString(HttpHeader.CONTENT_TYPE.getName())).isEqualTo(Optional.of(ContentType.APPLICATION_JSON.getType()));
+        HeaderMap headerMap = new HeaderMap(Map.of(HttpHeaderEnum.CONTENT_TYPE.getName(), ContentTypeEnum.APPLICATION_JSON.getType()));
+        Assertions.assertThat(headerMap.getString(HttpHeaderEnum.CONTENT_TYPE.getName())).isEqualTo(Optional.of(ContentTypeEnum.APPLICATION_JSON.getType()));
     }
 
     @Test
     void shouldReturnEmptyOptionalForMissingString() {
         HeaderMap headerMap = new HeaderMap(Map.of());
-        Assertions.assertThat(headerMap.getString(HttpHeader.CONTENT_TYPE.getName())).isEmpty();
+        Assertions.assertThat(headerMap.getString(HttpHeaderEnum.CONTENT_TYPE.getName())).isEmpty();
     }
 
     @Test
     void shouldGetIntegerValue() {
-        HeaderMap headerMap = new HeaderMap(Map.of(HttpHeader.CONTENT_LENGTH.getName(), "123"));
-        Assertions.assertThat(headerMap.getInteger(HttpHeader.CONTENT_LENGTH.getName())).isEqualTo(Optional.of(123));
+        HeaderMap headerMap = new HeaderMap(Map.of(HttpHeaderEnum.CONTENT_LENGTH.getName(), "123"));
+        Assertions.assertThat(headerMap.getInteger(HttpHeaderEnum.CONTENT_LENGTH.getName())).isEqualTo(Optional.of(123));
     }
 
     @Test
@@ -63,13 +63,13 @@ class HeaderMapTest {
 
     @Test
     void shouldReturnTrueWhenHeaderExists() {
-        HeaderMap headerMap = new HeaderMap(Map.of(HttpHeader.ACCEPT.getName(), ContentType.APPLICATION_JSON.getType()));
-        Assertions.assertThat(headerMap.exists(HttpHeader.ACCEPT.getName())).isTrue();
+        HeaderMap headerMap = new HeaderMap(Map.of(HttpHeaderEnum.ACCEPT.getName(), ContentTypeEnum.APPLICATION_JSON.getType()));
+        Assertions.assertThat(headerMap.exists(HttpHeaderEnum.ACCEPT.getName())).isTrue();
     }
 
     @Test
     void shouldReturnFalseWhenHeaderDoesNotExist() {
         HeaderMap headerMap = new HeaderMap(Map.of());
-        Assertions.assertThat(headerMap.exists(HttpHeader.ACCEPT.getName())).isFalse();
+        Assertions.assertThat(headerMap.exists(HttpHeaderEnum.ACCEPT.getName())).isFalse();
     }
 }

@@ -1,5 +1,7 @@
 package br.com.leonardo.io.output;
 
+import br.com.leonardo.enums.ContentTypeEnum;
+import br.com.leonardo.enums.HttpHeaderEnum;
 import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.RequestLine;
@@ -41,8 +43,8 @@ public interface HttpWriter {
             response = HttpResponse
                     .builder()
                     //Deve acompanhar o Accept header
-                    .header(br.com.leonardo.enums.HttpHeader.CONTENT_TYPE.getName(), br.com.leonardo.enums.ContentType.APPLICATION_JSON.getType())
-                    .header(br.com.leonardo.enums.HttpHeader.CONTENT_LENGTH.getName(), bodyBytes.length)
+                    .header(HttpHeaderEnum.CONTENT_TYPE.getName(), ContentTypeEnum.APPLICATION_JSON.getType())
+                    .header(HttpHeaderEnum.CONTENT_LENGTH.getName(), bodyBytes.length)
                     .statusCode(exception.getStatusCode())
                     .build();
 

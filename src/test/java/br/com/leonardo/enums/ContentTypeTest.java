@@ -8,8 +8,8 @@ import org.junit.jupiter.params.provider.EnumSource;
 class ContentTypeTest {
 
     @ParameterizedTest
-    @EnumSource(ContentType.class)
-    void ensureAllContentTypesHaveNonNullAndNonEmptyType(ContentType contentType) {
+    @EnumSource(ContentTypeEnum.class)
+    void ensureAllContentTypesHaveNonNullAndNonEmptyType(ContentTypeEnum contentType) {
         Assertions.assertThat(contentType.getType())
                 .isNotNull()
                 .isNotBlank();
@@ -18,7 +18,7 @@ class ContentTypeTest {
     @Test
     void shouldReturnCorrectTypeForApplicationJson() {
         // Given
-        ContentType contentType = ContentType.APPLICATION_JSON;
+        ContentTypeEnum contentType = ContentTypeEnum.APPLICATION_JSON;
 
         // Then
         Assertions.assertThat(contentType.getType()).isEqualTo("application/json");
@@ -27,7 +27,7 @@ class ContentTypeTest {
     @Test
     void shouldReturnCorrectTypeForTextHtml() {
         // Given
-        ContentType contentType = ContentType.TEXT_HTML;
+        ContentTypeEnum contentType = ContentTypeEnum.TEXT_HTML;
 
         // Then
         Assertions.assertThat(contentType.getType()).isEqualTo("text/html");
