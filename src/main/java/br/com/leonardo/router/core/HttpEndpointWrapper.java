@@ -2,7 +2,7 @@ package br.com.leonardo.router.core;
 
 import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.enums.HttpStatusCode;
-import br.com.leonardo.http.middleware.Middleware;
+import br.com.leonardo.router.core.middleware.Middleware;
 import br.com.leonardo.http.request.HttpRequest;
 import br.com.leonardo.http.response.HttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,7 +26,7 @@ public record HttpEndpointWrapper<I, O> (
 
         middlewares
                 .getFirst()
-                .handle(request);
+                .run(request);
     }
 
     public HttpResponse<O> createResponse() throws IOException {
@@ -48,7 +48,14 @@ public record HttpEndpointWrapper<I, O> (
 
             return endpoint
                     .handle(
-                            request.withBody(castedBody)
+                        new HttpRequest<>(
+                            this.request.requestLine(),
+                            this.request.headers(),
+                            castedBody,
+                            this.request.pathVariables(),
+                            this.request.queryParameters(),
+                            this.request.middlewareProperties()
+                        )
                     );
 
         } catch (NumberFormatException e) {

@@ -1,7 +1,7 @@
 package br.com.leonardo.annotation;
 
 import br.com.leonardo.enums.HttpMethod;
-import br.com.leonardo.http.middleware.Middleware;
+import br.com.leonardo.router.core.middleware.Middleware;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

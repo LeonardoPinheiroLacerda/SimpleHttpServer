@@ -11,6 +11,8 @@ import br.com.leonardo.router.extractor.HeaderExtractor;
 import br.com.leonardo.router.extractor.PathVariableExtractor;
 import br.com.leonardo.router.extractor.QueryParameterExtractor;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 public class HttpEndpointWrapperFactory {
@@ -30,7 +32,7 @@ public class HttpEndpointWrapperFactory {
         return new HttpEndpointWrapper<>(
                 httpEndpoint,
                 body,
-                new HttpRequest<>(requestLine, headerMap, null, pathMap, queryMap)
+                new HttpRequest<>(requestLine, headerMap, null, pathMap, queryMap, new HashMap<>())
         );
     }
 

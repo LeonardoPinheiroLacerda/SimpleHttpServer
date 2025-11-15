@@ -2,7 +2,7 @@ package br.com.leonardo.annotation.scanner;
 
 import br.com.leonardo.annotation.Endpoint;
 import br.com.leonardo.exception.ServerInitializationException;
-import br.com.leonardo.http.middleware.Middleware;
+import br.com.leonardo.router.core.middleware.Middleware;
 import br.com.leonardo.observability.nodetree.Node;
 import br.com.leonardo.observability.nodetree.TreeNodeLogger;
 import br.com.leonardo.router.core.HttpEndpoint;

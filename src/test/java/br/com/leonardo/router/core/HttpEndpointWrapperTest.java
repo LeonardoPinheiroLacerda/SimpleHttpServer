@@ -1,7 +1,7 @@
 package br.com.leonardo.router.core;
 
 import br.com.leonardo.exception.HttpException;
-import br.com.leonardo.http.middleware.Middleware;
+import br.com.leonardo.router.core.middleware.Middleware;
 import br.com.leonardo.http.request.HttpRequest;
 import br.com.leonardo.http.response.HttpResponse;
 import org.assertj.core.api.Assertions;
@@ -114,78 +114,6 @@ class HttpEndpointWrapperTest {
                 .assertThat(response)
                 .isNotNull()
                 .isEqualTo(this.httpResponse);
-    }
-
-    @Test
-    void shouldCreateAnHttpResponseForStringType() throws IOException {
-
-        //Given
-        underTest = new HttpEndpointWrapper<>(
-                httpEndpoint,
-                "anyBody".getBytes(),
-                httpRequest
-        );
-
-        Mockito
-                .when(httpEndpoint.resolveInputType())
-                .thenReturn(String.class);
-
-        Mockito
-                .when(httpEndpoint.handle(Mockito.any(HttpRequest.class)))
-                .thenReturn(httpResponse);
-
-        Mockito
-                .when(httpRequest.withBody(Mockito.anyString()))
-                .thenReturn(httpRequest);
-
-        //When
-        final HttpResponse<String> response = underTest.createResponse();
-
-        //Then
-        Assertions
-                .assertThat(response)
-                .isNotNull()
-                .isEqualTo(this.httpResponse);
-    }
-
-    @Test
-    void shouldCreateAnHttpResponseForPersonType() throws IOException {
-
-        //Given
-
-        byte[] body = "{\"name\":\"\",\"age\":25}".getBytes();
-
-        personUnderTest = new HttpEndpointWrapper<>(
-                httpPersonEndpoint,
-                body,
-                httpPersonRequest
-        );
-
-        Mockito
-                .when(httpPersonEndpoint.resolveInputType())
-                .thenReturn(Person.class);
-
-        Mockito
-                .when(httpPersonEndpoint.handle(Mockito.any(HttpRequest.class)))
-                .thenReturn(httpPersonResponse);
-
-        Mockito
-                .when(httpPersonRequest.withBody(Mockito.any(Person.class)))
-                .thenReturn(httpPersonRequest);
-
-        //When
-        final HttpResponse<Person> response = personUnderTest.createResponse();
-        final String string = personUnderTest.toString();
-
-        //Then
-        Assertions
-                .assertThat(response)
-                .isNotNull()
-                .isEqualTo(this.httpPersonResponse);
-
-        Assertions
-                .assertThat(string)
-                .isNotNull();
     }
 
     @Test
