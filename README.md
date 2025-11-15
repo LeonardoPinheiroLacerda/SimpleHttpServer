@@ -33,6 +33,7 @@ Este guia detalha como utilizar o framework em seus projetos.
         - [Query Parameters](#query-parameters)
         - [Corpo da Requisição (Body)](#corpo-da-requisição-body)
         - [Headers](#headers)
+        - [Propriedades do Middleware](#propriedades-do-middleware)
     - [Construindo a Resposta (HttpResponse)](#construindo-a-resposta-httpresponse)
 5. [Middlewares](#middlewares)
 6. [Servindo Arquivos Estáticos](#servindo-arquivos-estáticos)
@@ -130,7 +131,7 @@ Para iniciar, adicione a dependência do framework ao seu `pom.xml`:
 <dependency>
     <groupId>io.github.leonardopinheirolacerda</groupId>
     <artifactId>fastleaf</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
@@ -154,11 +155,11 @@ Você pode customizar o comportamento do servidor criando um arquivo `http-serve
 
 ### Propriedades da Aplicação
 
-| Nome da propriedade                | Descrição                                                                   | Valor Padrão  |
-|------------------------------------|-----------------------------------------------------------------------------|---------------|
-| `http.server.port`                   | Porta HTTP onde a aplicação irá rodar.                                      | `9000`        |
-| `http.server.static.content.enabled` | Habilita ou desabilita o recurso de servir arquivos estáticos.              | `true`        |
-| `http.server.static.content.path`    | Define o caminho (dentro de `resources`) que contém os arquivos estáticos.  | `static`      |
+| Nome da propriedade                  | Descrição                                                                  | Valor Padrão |
+|--------------------------------------|----------------------------------------------------------------------------|--------------|
+| `http.server.port`                   | Porta HTTP onde a aplicação irá rodar.                                     | `9000`       |
+| `http.server.static.content.enabled` | Habilita ou desabilita o recurso de servir arquivos estáticos.             | `true`       |
+| `http.server.static.content.path`    | Define o caminho (dentro de `resources`) que contém os arquivos estáticos. | `static`     |
 
 ### Logs
 
@@ -168,12 +169,12 @@ O framework utiliza SLF4J com Logback para um sistema de logs flexível.
 
 As seguintes propriedades podem ser configuradas no arquivo `http-server.properties`:
 
-| Nome da propriedade                 | Descrição                                                                            | Valor Padrão |
-|-------------------------------------|--------------------------------------------------------------------------------------|--------------|
-| `log.level`                         | Altera o nível de log raiz da aplicação (`ERROR`, `WARN`, `INFO`, `DEBUG`, `TRACE`). | `INFO`       |
+| Nome da propriedade                 | Descrição                                                                            | Valor Padrão        |
+|-------------------------------------|--------------------------------------------------------------------------------------|---------------------|
+| `log.level`                         | Altera o nível de log raiz da aplicação (`ERROR`, `WARN`, `INFO`, `DEBUG`, `TRACE`). | `INFO`              |
 | `log.pattern`                       | Define o padrão de formatação das mensagens de log no `logback.xml`.                 | (Padrão do Logback) |
-| `http.server.log.detailed-request`  | Se `true`, o conteúdo detalhado das requisições HTTP será logado.                    | `false`      |
-| `http.server.log.detailed-response` | Se `true`, o conteúdo detalhado das respostas HTTP será logado.                      | `false`      |
+| `http.server.log.detailed-request`  | Se `true`, o conteúdo detalhado das requisições HTTP será logado.                    | `false`             |
+| `http.server.log.detailed-response` | Se `true`, o conteúdo detalhado das respostas HTTP será logado.                      | `false`             |
 
 #### Customização Avançada (logback.xml)
 Para customizações avançadas (ex: formatters, appenders), crie um arquivo `logback.xml` em `src/main/resources`. O framework fornece um `PatternLayout` customizado que adiciona cores ao output do console, melhorando a legibilidade.
@@ -391,6 +392,16 @@ public class EchoUserAgentEndpoint extends HttpEndpoint<Void, String> {
 }
 ```
 
+#### Propriedades do Middleware
+Além dos dados padrão de uma requisição HTTP, o objeto `HttpRequest` pode carregar dados customizados adicionados por `Middlewares`. Isso permite uma comunicação segura e desacoplada entre a lógica de infraestrutura (como autenticação) e a lógica de negócio do endpoint.
+
+Os dados são acessados através de métodos específicos no objeto `request`:
+
+-   `getMiddlewareProperty(String key, Class<T> clazz)`: Recupera uma propriedade adicionada por um middleware, convertendo-a para o tipo `clazz`.
+-   `hasMiddlewareProperty(String key)`: Verifica se uma propriedade existe.
+
+Para um exemplo detalhado de como adicionar e consumir essas propriedades, consulte a seção [Middlewares](#middlewares).
+
 ### Construindo a Resposta (HttpResponse)
 
 O objeto `HttpResponse` é o que seu endpoint deve retornar. Ele contém o status, cabeçalhos e o corpo da resposta. A construção de um `HttpResponse` é feita exclusivamente através do `HttpResponse.builder()`.
@@ -423,30 +434,98 @@ public class DownloadReportEndpoint extends HttpEndpoint<Void, String> {
 
 # Middlewares
 
-Middlewares permitem executar lógicas antes de um endpoint (ex: autenticação, logging). Para criar um, estenda a classe `Middleware` e implemente o método `run`. O framework se encarrega de chamar o próximo middleware na cadeia ou o endpoint final automaticamente após a execução do método `run`.
+Middlewares são componentes poderosos que interceptam requisições HTTP antes que elas cheguem ao `HttpEndpoint`. Eles permitem executar lógicas transversais, como autenticação, logging, compressão e manipulação de headers, de forma modular e reutilizável.
 
-Middlewares são adicionados a um endpoint através do parâmetro `middlewares` da anotação `@Endpoint` e são executados na ordem declarada.
+Para criar um middleware, estenda a classe abstrata `Middleware` e implemente o método `run`. A responsabilidade de invocar o próximo middleware na cadeia recai sobre o desenvolvedor, que deve chamar `super.next(request)`. Se `super.next(request)` não for chamado, a cadeia de execução será interrompida e o endpoint final será executado. Caso não haja um próximo middleware, a chamada a `super.next(request)` não terá efeito.
 
-**Exemplo: Middleware de logging.**
+Middlewares são associados a um endpoint através do parâmetro `middlewares` da anotação `@Endpoint` e são executados na ordem em que são declarados.
+
+### Comunicação entre Middlewares e Endpoints
+
+Uma das funcionalidades mais importantes dos middlewares é a capacidade de compartilhar dados com os próximos middlewares na cadeia e com o `HttpEndpoint` final. Isso é feito através de um mapa de propriedades que é transportado dentro do objeto `HttpRequest`.
+
+Um middleware pode, por exemplo, validar um token de autenticação e, em seguida, adicionar o ID do usuário autenticado a essas propriedades. O endpoint pode então acessar esse ID de forma segura, sem precisar conhecer os detalhes da lógica de autenticação.
+
+O objeto `HttpRequest` fornece métodos específicos para essa comunicação:
+-   `addMiddlewareProperty(String key, Object value)`: Adiciona um novo dado ao contexto da requisição.
+-   `getMiddlewareProperty(String key, Class<T> clazz)`: Recupera um dado do contexto, fazendo o cast para o tipo esperado.
+-   `hasMiddlewareProperty(String key)`: Verifica se um dado existe no contexto.
+-   `removeMiddlewareProperty(String key)`: Remove um dado do contexto.
+-   `clearMiddlewareProperties()`: Remove todos os dados do contexto.
+
+**Exemplo: Cadeia de Middlewares (Logging e Autenticação)**
+
+Vamos criar uma cadeia com dois middlewares: o primeiro para logging e o segundo para autenticação.
+
+**1. Middleware de Logging**
+
+Este middleware registra a chegada de uma requisição e, em seguida, passa o controle para o próximo componente na cadeia.
+
 ```java
-public class LogMiddleware extends Middleware {
+public class LoggingMiddleware extends Middleware {
+    private static final Logger logger = LoggerFactory.getLogger(LoggingMiddleware.class);
+
     @Override
-    public void run(HttpRequest<?> request) {
-        System.out.println("Middleware: Requisição recebida com os cabeçalhos: " + request.headers());
-        // A lógica para continuar para o próximo middleware ou endpoint é tratada automaticamente pelo framework.
+    public void run(HttpRequest<?> request) throws HttpMiddlewareException {
+        logger.info("Requisição recebida para: {} {}", request.getMethod(), request.getUri());
+
+        // Chama o próximo middleware na cadeia para continuar o processamento
+        super.next(request);
     }
 }
 ```
 
-**Aplicação em um endpoint:**
+**2. Middleware de Autenticação**
+
+Este middleware simula a validação de um token e adiciona o ID do usuário à requisição. Se a autenticação falhar, ele interrompe a cadeia lançando uma exceção.
+
+```java
+public class AuthenticationMiddleware extends Middleware {
+    @Override
+    public void run(HttpRequest<?> request) throws HttpMiddlewareException {
+        // Em um cenário real, você validaria um token (ex: JWT)
+        final String token = request.headers().getString("Authorization").orElse(null);
+
+        if (token == null || !token.equals("Bearer valid-token")) {
+            // Lança uma exceção para interromper o fluxo e retornar um erro 401
+            throw new HttpMiddlewareException(HttpStatusCode.UNAUTHORIZED, "Token inválido ou ausente.");
+        }
+
+        // Token válido, extrai o ID do usuário (simulado) e o adiciona à requisição
+        String userId = "user-123";
+        request.addMiddlewareProperty("authenticatedUserId", userId);
+
+        // Chama o próximo middleware na cadeia para continuar o processamento
+        super.next(request);
+    }
+}
+```
+
+**Aplicação em um Endpoint**
+
+O endpoint agora aplica os dois middlewares. Eles serão executados na ordem declarada: primeiro `LoggingMiddleware`, depois `AuthenticationMiddleware`.
+
 ```java
 @Endpoint(
-    url = "/users", 
+    url = "/profile", 
     method = HttpMethod.GET, 
-    middlewares = {LogMiddleware.class} // Aplica o middleware
+    middlewares = {LoggingMiddleware.class, AuthenticationMiddleware.class} // Aplica os middlewares em ordem
 )
-public class GetUsersEndpoint extends HttpEndpoint<Void, String> {
-    // ...
+public class GetProfileEndpoint extends HttpEndpoint<Void, String> {
+    @Override
+    public HttpResponse<String> handle(HttpRequest<Void> request) {
+        // Recupera o ID do usuário adicionado pelo middleware de autenticação
+        String userId = request.getMiddlewareProperty("authenticatedUserId", String.class);
+
+        // Lógica para buscar o perfil do usuário
+        String userProfile = "Perfil do usuário: " + userId;
+
+        return HttpResponse
+                .<String>builder()
+                .statusCode(HttpStatusCode.OK)
+                .body(userProfile)
+                .build();
+    }
 }
 ```
 
