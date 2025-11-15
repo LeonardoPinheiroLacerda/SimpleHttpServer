@@ -1,5 +1,12 @@
 # Começando
 
+## Requisitos
+
+Para utilizar o framework, você precisará dos seguintes itens:
+
+*   **Java Development Kit (JDK)**: Versão 21 ou superior.
+*   **Maven**: Para gerenciamento de dependências e construção do projeto.
+
 Para iniciar, adicione a dependência do framework ao seu `pom.xml`:
 
 ```xml
