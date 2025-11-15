@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum ContentType {
+public enum ContentTypeEnum {
 
     // --- Textos ---
     TEXT_PLAIN("text/plain"),

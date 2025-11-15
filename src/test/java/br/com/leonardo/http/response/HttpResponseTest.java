@@ -1,6 +1,7 @@
 package br.com.leonardo.http.response;
 
-import br.com.leonardo.http.HttpHeader;
+import br.com.leonardo.enums.ContentTypeEnum;
+import br.com.leonardo.enums.HttpHeaderEnum;
 import br.com.leonardo.enums.HttpStatusCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ class HttpResponseTest {
         // Given
         HttpStatusCode expectedStatus = HttpStatusCode.OK;
         String expectedBody = "Test Body";
-        HttpHeader expectedHeader = new HttpHeader("Content-Type", "text/plain");
+        br.com.leonardo.http.HttpHeader expectedHeader = new br.com.leonardo.http.HttpHeader(HttpHeaderEnum.CONTENT_TYPE.getName(), ContentTypeEnum.TEXT_PLAIN.getType());
 
         // When
         HttpResponse<String> response = HttpResponse.<String>builder()
@@ -58,7 +59,7 @@ class HttpResponseTest {
 
         // Then
         Assertions.assertThat(response.getHeaders())
-                .contains(new HttpHeader("X-Custom-Header", "Value123"));
+                .contains(new br.com.leonardo.http.HttpHeader("X-Custom-Header", "Value123"));
     }
 
     @Test
@@ -72,8 +73,8 @@ class HttpResponseTest {
 
         // Then
         Assertions.assertThat(response.getHeaders())
-                .contains(new HttpHeader("Set-Cookie", "session=123"))
-                .contains(new HttpHeader("Set-Cookie", "user=leo"));
+                .contains(new br.com.leonardo.http.HttpHeader("Set-Cookie", "session=123"))
+                .contains(new br.com.leonardo.http.HttpHeader("Set-Cookie", "user=leo"));
     }
 
     @Test
@@ -84,11 +85,11 @@ class HttpResponseTest {
                 .body("Resource created")
                 .build();
 
-        response.addHeader("Location", "/users/123");
+        response.addHeader(HttpHeaderEnum.LOCATION.getName(), "/users/123");
 
         // Then
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatusCode.CREATED);
         Assertions.assertThat(response.getBody()).isEqualTo("Resource created");
-        Assertions.assertThat(response.getHeaders()).contains(new HttpHeader("Location", "/users/123"));
+        Assertions.assertThat(response.getHeaders()).contains(new br.com.leonardo.http.HttpHeader(HttpHeaderEnum.LOCATION.getName(), "/users/123"));
     }
 }
