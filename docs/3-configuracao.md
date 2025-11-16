@@ -25,6 +25,24 @@ As seguintes propriedades podem ser configuradas no arquivo `http-server.propert
 | `http.server.log.detailed-request`  | Se `true`, o conteúdo detalhado das requisições HTTP será logado.                    | `false`             |
 | `http.server.log.detailed-response` | Se `true`, o conteúdo detalhado das respostas HTTP será logado.                      | `false`             |
 
+### Exemplo de Arquivo de Propriedades
+
+Para configurar o servidor, crie um arquivo `http-server.properties` em `src/main/resources` com as seguintes propriedades:
+
+```properties
+# Configurações gerais do servidor HTTP
+http.server.port=9000
+http.server.static.content.enabled=true
+http.server.static.content.path=static
+
+# Configurações de log detalhado
+http.server.log.detailed-request=false
+http.server.log.detailed-response=false
+
+# Nível de log da aplicação (pode ser sobrescrito por logback.xml)
+log.level=INFO
+```
+
 #### Customização Avançada (logback.xml)
 Para customizações avançadas (ex: formatters, appenders), crie um arquivo `logback.xml` em `src/main/resources`. O framework fornece um `PatternLayout` customizado que adiciona cores ao output do console, melhorando a legibilidade.
 
