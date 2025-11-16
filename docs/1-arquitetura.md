@@ -49,9 +49,12 @@ A seguir, a função de cada pacote principal e suas classes mais importantes.
 
 *   #### `br.com.leonardo.io`
     *   **Função:** Camada de Entrada/Saída (I/O), responsável pela comunicação de baixo nível com o cliente.
-    *   **`ConnectionIOHandler`**: Gerencia o ciclo de vida de uma única conexão. Orquestra a leitura da requisição, o acionamento do `HttpWriter` e a escrita da resposta.
-    *   **`ApiHttpResponseWriter`**: Implementação de `HttpWriter` para endpoints de API. Orquestra a busca (`HttpEndpointResolver`) e a preparação (`HttpEndpointWrapperFactory`) do endpoint para execução.
+    *   **`ConnectionIOHandler`**: Gerencia o ciclo de vida de uma única conexão. Usa `HttpWriterFactory` para obter o `HttpWriter` correto e orquestra o fluxo de geração e escrita da resposta. Em caso de erro, utiliza `ConnectionErrorHandler`.
+    *   **`output.factory.HttpWriterFactory`**: Classe de fábrica que decide qual implementação de `HttpWriter` (`ApiHttpResponseWriter` ou `StaticHttpResponseWriter`) deve ser usada com base na URI da requisição.
+    *   **`ApiHttpResponseWriter`**: Implementação de `HttpWriter` para endpoints de API. Orquestra a busca e preparação do endpoint.
     *   **`StaticHttpResponseWriter`**: Implementação de `HttpWriter` para servir arquivos estáticos.
+    *   **`output.util.ContentTypeNegotiation`**: Classe utilitária responsável pela lógica de negociação de `Content-Type` e serialização do corpo da resposta.
+    *   **`ConnectionErrorHandler`**: Centraliza o tratamento de exceções durante o processamento da requisição, garantindo que uma resposta de erro formatada seja enviada ao cliente.
 
 *   #### `br.com.leonardo.parser`
     *   **Função:** Análise (parsing) da requisição HTTP bruta.
