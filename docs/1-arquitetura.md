@@ -50,43 +50,45 @@ A seguir, a função de cada pacote principal e suas classes mais importantes.
 *   #### `br.com.leonardo.io`
     *   **Função:** Camada de Entrada/Saída (I/O), responsável pela comunicação de baixo nível com o cliente.
     *   **`ConnectionIOHandler`**: Gerencia o ciclo de vida de uma única conexão. Usa `HttpWriterFactory` para obter o `HttpWriter` correto e orquestra o fluxo de geração e escrita da resposta. Em caso de erro, utiliza `ConnectionErrorHandler`.
-    *   **`output.factory.HttpWriterFactory`**: Classe de fábrica que decide qual implementação de `HttpWriter` (`ApiHttpResponseWriter` ou `StaticHttpResponseWriter`) deve ser usada com base na URI da requisição.
+    *   **`HttpWriterFactory`**: Classe de fábrica (em `output.factory`) que decide qual `HttpWriter` (`ApiHttpResponseWriter` ou `StaticHttpResponseWriter`) usar com base na URI da requisição.
     *   **`ApiHttpResponseWriter`**: Implementação de `HttpWriter` para endpoints de API. Orquestra a busca e preparação do endpoint.
     *   **`StaticHttpResponseWriter`**: Implementação de `HttpWriter` para servir arquivos estáticos.
-    *   **`output.util.ContentTypeNegotiation`**: Classe utilitária responsável pela lógica de negociação de `Content-Type` e serialização do corpo da resposta.
-    *   **`ConnectionErrorHandler`**: Centraliza o tratamento de exceções durante o processamento da requisição, garantindo que uma resposta de erro formatada seja enviada ao cliente.
+    *   **`ContentTypeNegotiation`**: Classe utilitária (em `output.util`) responsável pela lógica de negociação de `Content-Type` e serialização do corpo da resposta.
+    *   **`ConnectionErrorHandler`**: Centraliza o tratamento de exceções, garantindo que uma resposta de erro (`HttpException`) seja enviada ao cliente.
 
 *   #### `br.com.leonardo.parser`
     *   **Função:** Análise (parsing) da requisição HTTP bruta.
-    *   **`HttpRequestFactory`**: Atua como uma fachada (Façade) que usa parsers específicos (`RequestLineParser`, `RequestHeaderParser`, `RequestBodyParser`) para converter a string da requisição em um objeto `HttpRequestData`.
+    *   **`HttpRequestFactory`**: Atua como uma fachada (Façade) que usa `RequestLineParser`, `RequestHeaderParser` e `RequestBodyParser` para converter a string da requisição em um objeto `HttpRequestData`.
 
 *   #### `br.com.leonardo.router`
     *   **Função:** O cérebro do framework, responsável pelo roteamento e preparação para a execução.
     *   **`router.core`**: Contém as entidades centrais do roteamento.
         *   **`HttpEndpointResolver`**: Serviço que encontra o `HttpEndpoint` que corresponde a uma dada requisição.
-        *   **`HttpEndpoint`**: A classe abstrata que os usuários estendem para criar suas rotas. Contém a lógica de negócio no método `handle` e pode ter uma cadeia de `Middlewares`.
-        *   **`HttpEndpointWrapper`**: Encapsula um `HttpEndpoint` e os dados da requisição. É responsável por executar os middlewares e, em seguida, o método `handle` do endpoint.
+        *   **`HttpEndpoint`**: Classe abstrata que os usuários estendem para criar suas rotas. Contém a lógica de negócio no método `handle` e pode ter uma cadeia de `Middlewares`.
+        *   **`HttpEndpointWrapper`**: Encapsula um `HttpEndpoint` e os dados da requisição. É responsável por executar os `Middlewares` e, em seguida, o método `handle` do endpoint.
         *   **`HttpEndpointWrapperFactory`**: Classe utilitária que cria um `HttpEndpointWrapper` configurado, usando os `Extractors` no processo.
-        *   **`middleware.Middleware`**: Classe abstrata para a criação de middlewares, que podem ser encadeados para executar lógica (ex: autenticação, logging) antes do `HttpEndpoint`.
-    *   **`router.matcher`**:
-        *   **`UriMatcher` (Interface)**: Define um contrato para classes que comparam uma URI de requisição com um padrão de rota.
+        *   **`Middleware`**: Classe abstrata (em `core.middleware`) para a criação de middlewares, que podem ser encadeados para executar lógicas (como autenticação ou logging) antes do `HttpEndpoint`.
+    *   **`router.matcher`**: Contém classes que comparam a URI da requisição com os padrões de rota.
+        *   **`UriMatcher` (Interface)**: Define o contrato para as classes de comparação de URI.
         *   **`EndpointUriMatcher` (Composite)**: Agrega múltiplos `UriMatcher`s para testar uma URI contra várias estratégias.
-    *   **`router.extractor`**:
-        *   **`PathVariableExtractor`, `QueryParameterExtractor`, `HeaderExtractor`**: Classes utilitárias focadas em extrair informações específicas de uma requisição.
+    *   **`router.extractor`**: Contém classes que extraem dados da requisição.
+        *   **`PathVariableExtractor`**: Extrai variáveis do caminho da URI (ex: `/users/{id}`).
+        *   **`QueryParameterExtractor`**: Extrai parâmetros da query string (ex: `?name=leo`).
+        *   **`HeaderExtractor`**: Extrai cabeçalhos da requisição.
 
 *   #### `br.com.leonardo.http`
     *   **Função:** Contém os modelos de dados que representam os conceitos do protocolo HTTP.
     *   **`HttpRequest`, `HttpResponse`**: Representam as estruturas fundamentais do HTTP, servindo como a "linguagem" comum usada em todo o framework.
-    *   **`request.map`**: Contém records como `HeaderMap`, `PathVariableMap` e `QueryParameterMap`, que fornecem uma API segura e conveniente para acessar dados extraídos da requisição.
+    *   **`request.map`**: Contém records (`HeaderMap`, `PathVariableMap`, `QueryParameterMap`) que fornecem uma API segura para acessar dados da requisição.
 
 *   #### `br.com.leonardo.annotation`
     *   **Função:** Definição de anotações e lógica de escaneamento.
-    *   **`@Endpoint`**: Anotação usada para marcar uma classe como um endpoint HTTP, definindo sua URL, método e middlewares.
-    *   **`EndpointScanner`**: Classe que, na inicialização, varre o classpath em busca de classes anotadas com `@Endpoint` e as registra no `HttpEndpointResolver`.
+    *   **`@Endpoint`**: Anotação para marcar uma classe como um endpoint HTTP, definindo sua URL, método e `Middlewares`.
+    *   **`EndpointScanner`**: Classe que, na inicialização, varre o classpath em busca de classes com `@Endpoint` e as registra no `HttpEndpointResolver`.
 
 *   #### `br.com.leonardo.config`
     *   **Função:** Gerencia a configuração da aplicação.
-    *   **`ApplicationProperties`**: Carrega e fornece acesso a propriedades definidas no arquivo `http-server.properties`, permitindo configurar porta, logging, etc.
+    *   **`ApplicationProperties`**: Carrega e fornece acesso a propriedades do arquivo `http-server.properties`, permitindo configurar porta, logging, etc.
 
 *   #### `br.com.leonardo.observability`
     *   **Função:** Lida com aspectos de observabilidade, como logging e tracing.
@@ -95,9 +97,9 @@ A seguir, a função de cada pacote principal e suas classes mais importantes.
 
 *   #### `br.com.leonardo.enums`
     *   **Função:** Centraliza as enumerações utilizadas no framework.
-    *   **`HttpMethod`, `HttpStatusCode`, `ContentTypeEnum`**: Enums que representam os conceitos padrão do protocolo HTTP, garantindo consistência e prevenindo erros.
+    *   **`HttpMethod`, `HttpStatusCode`, `ContentTypeEnum`**: Enums que representam os conceitos padrão do protocolo HTTP.
 
 *   #### `br.com.leonardo.exception`
     *   **Função:** Define as exceções customizadas do framework.
-    *   **`HttpException`**: Exceção base para erros relacionados ao processamento HTTP, que carrega um `HttpStatusCode` e informações para a resposta de erro.
+    *   **`HttpException`**: Exceção base para erros de processamento HTTP, que carrega um `HttpStatusCode` e informações para a resposta de erro.
     *   **`ServerInitializationException`**: Lançada quando ocorre um erro crítico durante a inicialização do servidor.
