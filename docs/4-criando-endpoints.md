@@ -36,7 +36,9 @@ public class UserDTO {
         this.name = name;
     }
 }
+```
 
+```java
 // Endpoint
 @Endpoint(url = "/users", method = HttpMethod.GET)
 public class GetUsersEndpoint extends HttpEndpoint<Void, List<UserDTO>> {
@@ -156,7 +158,9 @@ public class CreateUserDTO {
         this.name = name;
     }
 }
+```
 
+```java
 @Endpoint(url = "/users", method = HttpMethod.POST)
 public class CreateUserEndpoint extends HttpEndpoint<CreateUserDTO, Void> {
     @Override
