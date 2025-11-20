@@ -4,7 +4,7 @@
 
     <groupId>io.github.leonardopinheirolacerda</groupId>
     <artifactId>fastleaf</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <packaging>jar</packaging>
 
     <name>FastLeaf</name>
