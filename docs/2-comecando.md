@@ -13,7 +13,7 @@ Para iniciar, adicione a dependência do framework ao seu `pom.xml`:
 <dependency>
     <groupId>io.github.leonardopinheirolacerda</groupId>
     <artifactId>fastleaf</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 

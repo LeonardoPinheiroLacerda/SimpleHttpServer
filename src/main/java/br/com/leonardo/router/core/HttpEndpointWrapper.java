@@ -48,16 +48,18 @@ public record HttpEndpointWrapper<I, O> (
 
             return endpoint
                     .handle(
-                        new HttpRequest<>(
-                            this.request.requestLine(),
-                            this.request.headers(),
-                            castedBody,
-                            this.request.pathVariables(),
-                            this.request.queryParameters(),
-                            this.request.middlewareProperties()
-                        )
+                            new HttpRequest<>(
+                                    this.request.requestLine(),
+                                    this.request.headers(),
+                                    castedBody,
+                                    this.request.pathVariables(),
+                                    this.request.queryParameters(),
+                                    this.request.middlewareProperties()
+                            )
                     );
 
+        } catch (HttpException e) {
+            throw e;
         } catch (NumberFormatException e) {
             throw new HttpException("Invalid number format " + e.getMessage(), HttpStatusCode.INTERNAL_SERVER_ERROR, request.uri(), e);
         } catch (NoSuchElementException e) {
