@@ -1,12 +1,9 @@
 package br.com.leonardo.io;
 
 import br.com.leonardo.config.ApplicationProperties;
-import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.exception.handler.HttpExceptionHandlerResolver;
-import br.com.leonardo.exception.handler.model.ProblemDetails;
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.RequestLine;
-import br.com.leonardo.http.request.HttpRequest;
 import br.com.leonardo.http.response.HttpResponse;
 import br.com.leonardo.io.input.HttpRequestReader;
 import br.com.leonardo.io.output.HttpWriter;
@@ -15,17 +12,13 @@ import br.com.leonardo.io.output.util.ContentTypeNegotiation;
 import br.com.leonardo.observability.TraceIdLifeCycleHandler;
 import br.com.leonardo.parser.factory.HttpRequestFactory;
 import br.com.leonardo.parser.factory.model.HttpRequestData;
-import br.com.leonardo.router.core.HttpEndpoint;
 import br.com.leonardo.router.core.HttpEndpointResolver;
-import br.com.leonardo.router.core.HttpEndpointWrapper;
-import br.com.leonardo.router.core.HttpEndpointWrapperFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
