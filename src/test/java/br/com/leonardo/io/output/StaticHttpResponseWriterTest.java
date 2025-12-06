@@ -22,7 +22,7 @@ class StaticHttpResponseWriterTest {
     private RequestLine requestLine;
 
     @Test
-    void shouldGenerateResponse() {
+    void shouldGenerateResponse() throws Exception {
         //Given
         StaticHttpResponseWriter writer = new StaticHttpResponseWriter();
         byte[] expectedBody = "test content".getBytes();
@@ -45,7 +45,7 @@ class StaticHttpResponseWriterTest {
     }
 
     @Test
-    void shouldGenerateResponseWithEmptyBody() {
+    void shouldGenerateResponseWithEmptyBody() throws Exception {
         //Given
         StaticHttpResponseWriter writer = new StaticHttpResponseWriter();
         byte[] expectedBody = new byte[0];

@@ -105,7 +105,7 @@ public interface HttpWriter {
         return bodyBytes;
     }
 
-    HttpResponse<?> generateResponse(HttpRequestData requestData) throws HttpException;
+    HttpResponse<?> generateResponse(HttpRequestData requestData) throws Exception;
 
     byte[] getBody(RequestLine requestLine,
                    Set<HttpHeader> headers,

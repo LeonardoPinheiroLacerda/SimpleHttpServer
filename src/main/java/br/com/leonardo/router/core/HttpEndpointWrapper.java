@@ -1,17 +1,14 @@
 package br.com.leonardo.router.core;
 
-import br.com.leonardo.enums.HttpStatusCode;
 import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.http.request.HttpRequest;
 import br.com.leonardo.http.response.HttpResponse;
 import br.com.leonardo.router.core.middleware.Middleware;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
-public record HttpEndpointWrapper<I, O> (
+public record HttpEndpointWrapper<I, O>(
         HttpEndpoint<I, O> endpoint,
         byte[] body,
         HttpRequest<I> request
@@ -20,7 +17,7 @@ public record HttpEndpointWrapper<I, O> (
     public void runMiddlewares() throws HttpException {
         final List<Middleware> middlewares = this.endpoint.getMiddlewares();
 
-        if(middlewares.isEmpty()) {
+        if (middlewares.isEmpty()) {
             return;
         }
 
@@ -29,46 +26,35 @@ public record HttpEndpointWrapper<I, O> (
                 .run(request);
     }
 
-    public HttpResponse<O> createResponse() throws IOException {
-        try {
+    public HttpResponse<O> createResponse() throws Exception {
 
-            I castedBody = switch (endpoint.resolveInputType().getTypeName()) {
-                case "java.lang.Void" -> null;
-                case "java.lang.String" -> (I) new String(body);
+        I castedBody = switch (endpoint.resolveInputType().getTypeName()) {
+            case "java.lang.Void" -> null;
+            case "java.lang.String" -> (I) new String(body);
 
-                default -> {
-                    final ObjectMapper mapper = new ObjectMapper();
-                    yield mapper.readValue(body, mapper.constructType(endpoint.resolveInputType()));
-                }
-            };
-
-            if (castedBody == null) {
-                return endpoint.handle(request);
+            default -> {
+                final ObjectMapper mapper = new ObjectMapper();
+                yield mapper.readValue(body, mapper.constructType(endpoint.resolveInputType()));
             }
+        };
 
-            return endpoint
-                    .handle(
-                            new HttpRequest<>(
-                                    this.request.requestLine(),
-                                    this.request.headers(),
-                                    castedBody,
-                                    this.request.pathVariables(),
-                                    this.request.queryParameters(),
-                                    this.request.middlewareProperties()
-                            )
-                    );
-
-        } catch (HttpException e) {
-            throw e;
-        } catch (NumberFormatException e) {
-            throw new HttpException("Invalid number format " + e.getMessage(), HttpStatusCode.INTERNAL_SERVER_ERROR, request.uri(), e);
-        } catch (NoSuchElementException e) {
-            throw new HttpException(e.getMessage() + "' is missing.", HttpStatusCode.INTERNAL_SERVER_ERROR, request.uri(), e);
-        } catch (IllegalArgumentException e) {
-            throw new HttpException("Invalid argument " + e.getMessage(), HttpStatusCode.INTERNAL_SERVER_ERROR, request.uri(), e);
-        } catch (Exception e) {
-            throw new HttpException("Something unexpected happened", HttpStatusCode.INTERNAL_SERVER_ERROR, request.uri(), e);
+        if (castedBody == null) {
+            return endpoint.handle(request);
         }
+
+        return endpoint
+                .handle(
+                        new HttpRequest<>(
+                                this.request.requestLine(),
+                                this.request.headers(),
+                                castedBody,
+                                this.request.pathVariables(),
+                                this.request.queryParameters(),
+                                this.request.middlewareProperties()
+                        )
+                );
+
+
     }
 
     @Override

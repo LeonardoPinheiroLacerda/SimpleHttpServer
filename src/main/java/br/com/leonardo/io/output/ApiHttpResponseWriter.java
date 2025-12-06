@@ -21,7 +21,7 @@ public record ApiHttpResponseWriter (
 ) implements HttpWriter {
 
     @Override
-    public HttpResponse<?> generateResponse(HttpRequestData requestData) throws HttpException {
+    public HttpResponse<?> generateResponse(HttpRequestData requestData) throws Exception {
 
         final HttpEndpoint<?, ?> httpEndpoint = resolver.get(requestData)
                 .orElseThrow(() -> new HttpException("No handler were found for this endpoint",
@@ -34,14 +34,7 @@ public record ApiHttpResponseWriter (
 
         httpEndpointWrapper.runMiddlewares();
 
-        try {
-            return httpEndpointWrapper.createResponse();
-        } catch (IOException e) {
-            throw new HttpException(e.getMessage(),
-                    HttpStatusCode.INTERNAL_SERVER_ERROR,
-                    requestData.requestLine().uri()
-            );
-        }
+        return httpEndpointWrapper.createResponse();
 
     }
 

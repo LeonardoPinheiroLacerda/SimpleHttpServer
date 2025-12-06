@@ -47,6 +47,7 @@ A arquitetura da aplicação é organizada na seguinte estrutura de pacotes e cl
         *   `scanner`: Contém o scanner de anotações.
             *   **`EndpointScanner`**: Varre o classpath em busca de classes com a anotação `@Endpoint` para registrá-las como rotas.
         *   **`@Endpoint`**: Anotação para marcar uma classe como um endpoint HTTP, definindo sua URL, método e `Middlewares`.
+        *   **`@ExceptionHandler`**: Anotação para marcar uma classe como um manipulador de exceções global.
     *   `config`: Gerencia a configuração da aplicação.
         *   **`ApplicationProperties`**: Carrega e fornece acesso a propriedades do arquivo `http-server.properties`.
         *   **`HighlightingCompositeConverter`**: Componente do Logback para adicionar cores ao log do console.
@@ -60,6 +61,16 @@ A arquitetura da aplicação é organizada na seguinte estrutura de pacotes e cl
         *   **`HttpException`**: Exceção base para erros de processamento HTTP, que carrega um `HttpStatusCode`.
         *   **`HttpMiddlewareException`**: Subclasse de `HttpException` para erros que ocorrem em `Middlewares`.
         *   **`ServerInitializationException`**: Lançada quando ocorre um erro crítico durante a inicialização do servidor.
+        *   `handler`: Contém a lógica de tratamento de erros.
+            *   `impl`: Implementações padrão de manipuladores de erro.
+                *   **`InternalServerErrorHttpExceptionHandler`**: Manipulador padrão para erros 500.
+                *   **`HttpHttpExceptionHandler`**: Manipulador para `HttpException`.
+                *   **`HttpMiddlewareHttpExceptionHandler`**: Manipulador para `HttpMiddlewareException`.
+            *   `model`: Modelos de dados para o tratamento de erros.
+                *   **`ProblemDetails`**: Objeto que encapsula os detalhes do erro (RFC 7807).
+            *   **`HttpExceptionHandler`**: Interface para criar manipuladores de erro customizados.
+            *   **`HttpExceptionHandlerResolver`**: Resolve o manipulador de erro apropriado para uma exceção.
+            *   **`StandardHttpExceptionHandlersFactory`**: Cria os manipuladores de erro padrão.
     *   `http`: Contém os modelos de dados que representam os conceitos do protocolo HTTP.
         *   `request`: Contém as classes relacionadas à requisição HTTP.
             *   `map`: Contém records que fornecem uma API segura para acessar dados da requisição.
@@ -83,7 +94,7 @@ A arquitetura da aplicação é organizada na seguinte estrutura de pacotes e cl
             *   **`ApiHttpResponseWriter`**: `HttpWriter` para endpoints de API, que orquestra a busca e execução do endpoint.
             *   **`HttpWriter`**: Interface que define o contrato para classes que escrevem respostas HTTP.
             *   **`StaticHttpResponseWriter`**: `HttpWriter` para servir arquivos estáticos.
-        *   **`ConnectionErrorHandler`**: Centraliza o tratamento de exceções para enviar uma resposta de erro formatada.
+        *   **`ConnectionErrorHandler`**: Centraliza o tratamento de exceções, usando o `HttpExceptionHandlerResolver` para encontrar um handler e gerar uma resposta de erro.
         *   **`ConnectionIOHandler`**: Orquestra o ciclo de vida de uma única conexão TCP, desde a leitura até a escrita da resposta.
     *   `observability`: Lida com aspectos de observabilidade, como logging e tracing.
         *   `nodetree`: Utilitário para logar informações em formato de árvore.

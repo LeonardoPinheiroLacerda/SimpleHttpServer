@@ -1,7 +1,7 @@
 package br.com.leonardo.io;
 
 import br.com.leonardo.config.ApplicationProperties;
-import br.com.leonardo.exception.HttpException;
+import br.com.leonardo.exception.handler.HttpExceptionHandlerResolver;
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.RequestLine;
 import br.com.leonardo.http.response.HttpResponse;
@@ -24,7 +24,8 @@ import java.util.Set;
 @Slf4j
 public record ConnectionIOHandler(
         Socket clientConnection,
-        HttpEndpointResolver resolver
+        HttpEndpointResolver resolver,
+        HttpExceptionHandlerResolver exceptionResolver
 ) implements Runnable {
 
     @Override
@@ -82,22 +83,8 @@ public record ConnectionIOHandler(
 
             log.trace("Response written successfully for request: {}", requestLine);
 
-        } catch (HttpException e) {
-            ConnectionErrorHandler.dispatchHttpException(
-                    outputStream,
-                    httpWriter,
-                    requestLine,
-                    headers,
-                    e
-            );
         } catch (Exception e) {
-            ConnectionErrorHandler.dispatchException(
-                    outputStream,
-                    httpWriter,
-                    requestLine,
-                    headers,
-                    e
-            );
+            ConnectionErrorHandler.dispatchException(outputStream, httpWriter, requestData, resolver, exceptionResolver, e);
         }
     }
 

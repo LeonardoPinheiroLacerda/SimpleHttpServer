@@ -1,7 +1,9 @@
 package br.com.leonardo.server;
 
 import br.com.leonardo.annotation.scanner.EndpointScanner;
+import br.com.leonardo.annotation.scanner.ExceptionHandlerScanner;
 import br.com.leonardo.exception.ServerInitializationException;
+import br.com.leonardo.exception.handler.HttpExceptionHandlerResolver;
 import br.com.leonardo.router.core.HttpEndpointResolver;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,12 +26,14 @@ public class ServerRunner {
 
         log.info("\n{}", BANNER);
 
-        final HttpEndpointResolver resolver = new HttpEndpointResolver();
 
-        EndpointScanner scanner = new EndpointScanner(resolver);
-        scanner.scan(clazz);
+        EndpointScanner scanner = new EndpointScanner();
+        ExceptionHandlerScanner exceptionScanner = new ExceptionHandlerScanner();
 
-        try (Server server = new Server(resolver)){
+        final HttpEndpointResolver httpEndpointResolver = scanner.scan(clazz);
+        final HttpExceptionHandlerResolver httpExceptionHandlerResolver = exceptionScanner.scan(clazz);
+
+        try (Server server = new Server(httpEndpointResolver, httpExceptionHandlerResolver)){
             server.start();
         } catch (IOException e) {
             throw new ServerInitializationException(e.getMessage());

@@ -12,7 +12,7 @@ import java.util.Set;
 public class StaticHttpResponseWriter implements HttpWriter {
 
     @Override
-    public HttpResponse<?> generateResponse(HttpRequestData requestData) {
+    public HttpResponse<?> generateResponse(HttpRequestData requestData) throws Exception{
         return HttpResponse
                 .<byte[]>builder()
                 .statusCode(HttpStatusCode.OK)

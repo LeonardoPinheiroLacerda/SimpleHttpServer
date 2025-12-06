@@ -30,3 +30,4 @@ Para um entendimento completo do framework, consulte as seções abaixo:
 4.  [**Criando Endpoints**](./docs/4-criando-endpoints.md): Um guia completo sobre como criar rotas, acessar dados da requisição e construir respostas.
 5.  [**Middlewares**](./docs/5-middlewares.md): Aprenda a interceptar requisições para executar lógicas transversais como autenticação e logging.
 6.  [**Servindo Arquivos Estáticos**](./docs/6-servindo-arquivos-estaticos.md): Como servir HTML, CSS, JavaScript e outros assets, e a regra de precedência sobre os endpoints de API.
+7.  [**Tratamento de Erros**](./docs/7-tratamento-de-erros.md): Como criar manipuladores de exceção customizados e centralizar o tratamento de erros da sua API.

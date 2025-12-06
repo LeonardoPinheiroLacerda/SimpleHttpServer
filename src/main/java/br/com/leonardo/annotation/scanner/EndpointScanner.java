@@ -13,11 +13,12 @@ import org.reflections.Reflections;
 import java.lang.reflect.InvocationTargetException;
 
 @Slf4j
-public record EndpointScanner(
-        HttpEndpointResolver resolver
-) {
+public class EndpointScanner {
 
-    public void scan(Class<?> clazz) {
+    public HttpEndpointResolver scan(Class<?> clazz) {
+
+        final HttpEndpointResolver resolver = new HttpEndpointResolver();
+
         final String pack = clazz.getPackage().getName();
         final Reflections reflections = new Reflections(pack);
 
@@ -72,6 +73,8 @@ public record EndpointScanner(
 
         new TreeNodeLogger(log)
                 .logTree(root);
+
+        return resolver;
 
     }
 

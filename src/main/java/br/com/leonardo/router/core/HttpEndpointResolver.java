@@ -24,11 +24,10 @@ public class HttpEndpointResolver {
             )
     );
 
-    public HttpEndpointResolver add(HttpEndpoint<?, ?> endpoint) {
+    public void add(HttpEndpoint<?, ?> endpoint) {
         endpointMap
                 .computeIfAbsent(endpoint.getMethod(), k -> ConcurrentHashMap.newKeySet())
                 .add(endpoint);
-        return this;
     }
 
     public Optional<HttpEndpoint<?, ?>> get(HttpRequestData requestData) {

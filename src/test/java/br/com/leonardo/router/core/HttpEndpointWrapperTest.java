@@ -1,6 +1,5 @@
 package br.com.leonardo.router.core;
 
-import br.com.leonardo.exception.HttpException;
 import br.com.leonardo.http.request.HttpRequest;
 import br.com.leonardo.http.response.HttpResponse;
 import br.com.leonardo.router.core.middleware.Middleware;
@@ -11,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -89,7 +87,7 @@ class HttpEndpointWrapperTest {
     }
 
     @Test
-    void shouldCreateAnHttpResponseForVoidType() throws IOException {
+    void shouldCreateAnHttpResponseForVoidType() throws Exception {
 
         //Given
         underTest = new HttpEndpointWrapper<>(
@@ -142,7 +140,7 @@ class HttpEndpointWrapperTest {
 
         Assertions
                 .assertThatThrownBy(personUnderTest::createResponse)
-                .isInstanceOf(HttpException.class);
+                .isInstanceOf(Exception.class);
 
     }
 

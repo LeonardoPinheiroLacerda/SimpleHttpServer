@@ -93,7 +93,7 @@ class ApiHttpResponseWriterTest {
         //Then
         Assertions
                 .assertThatThrownBy(() -> underTest.generateResponse(requestData))
-                .isInstanceOf(HttpException.class);
+                .isInstanceOf(Exception.class);
 
     }
 

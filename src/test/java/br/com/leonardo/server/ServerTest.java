@@ -1,5 +1,6 @@
 package br.com.leonardo.server;
 
+import br.com.leonardo.exception.handler.HttpExceptionHandlerResolver;
 import br.com.leonardo.router.core.HttpEndpointResolver;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,7 @@ class ServerTest {
 
     @Mock
     private HttpEndpointResolver resolver;
+    private HttpExceptionHandlerResolver exceptionResolver;
 
     @Test
     void shouldConstructServer() throws Exception {
@@ -32,7 +34,7 @@ class ServerTest {
                 MockedStatic<Runtime> runtime = Mockito.mockStatic(Runtime.class)
         ) {
             //When
-            server = new Server(resolver);
+            server = new Server(resolver, exceptionResolver);
 
             //Then
             Assertions
@@ -49,7 +51,7 @@ class ServerTest {
                 MockedStatic<Runtime> runtime = Mockito.mockStatic(Runtime.class)
         ) {
             //When
-            server = new Server(resolver);
+            server = new Server(resolver, exceptionResolver);
 
             Runtime runtimeMock = Mockito
                     .mock(Runtime.class);
@@ -80,7 +82,7 @@ class ServerTest {
                 MockedStatic<Runtime> runtime = Mockito.mockStatic(Runtime.class)
         ) {
             //When
-            server = new Server(resolver);
+            server = new Server(resolver, exceptionResolver);
 
             Runtime runtimeMock = Mockito
                     .mock(Runtime.class);
@@ -111,7 +113,7 @@ class ServerTest {
                 MockedStatic<Runtime> runtime = Mockito.mockStatic(Runtime.class)
         ) {
             //When
-            server = new Server(resolver);
+            server = new Server(resolver, exceptionResolver);
             server.close();
 
             //Then
