@@ -1,8 +1,8 @@
 package br.com.leonardo.server;
 
+import br.com.leonardo.context.resolver.HttpEndpointResolver;
 import br.com.leonardo.context.scanner.EndpointScanner;
 import br.com.leonardo.exception.ServerInitializationException;
-import br.com.leonardo.context.resolver.HttpEndpointResolver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,14 +1,12 @@
 package br.com.leonardo.context.scanner;
 
 import br.com.leonardo.context.annotations.ExceptionHandler;
+import br.com.leonardo.context.resolver.HttpExceptionHandlerResolver;
 import br.com.leonardo.exception.HttpException;
-import br.com.leonardo.exception.HttpMiddlewareException;
 import br.com.leonardo.exception.ServerInitializationException;
 import br.com.leonardo.exception.handler.HttpExceptionHandler;
-import br.com.leonardo.context.resolver.HttpExceptionHandlerResolver;
+import br.com.leonardo.exception.handler.StandardHttpExceptionHandlersFactory;
 import br.com.leonardo.exception.handler.impl.HttpHttpExceptionHandler;
-import br.com.leonardo.exception.handler.impl.HttpMiddlewareHttpExceptionHandler;
-import br.com.leonardo.exception.handler.impl.InternalServerErrorHttpExceptionHandler;
 import br.com.leonardo.exception.handler.model.ProblemDetails;
 import br.com.leonardo.http.response.HttpResponse;
 import org.junit.jupiter.api.Test;
@@ -25,7 +23,6 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
-import br.com.leonardo.exception.handler.StandardHttpExceptionHandlersFactory;
 
 
 @ExtendWith(MockitoExtension.class)

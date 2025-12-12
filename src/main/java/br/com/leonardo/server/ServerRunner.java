@@ -1,12 +1,8 @@
 package br.com.leonardo.server;
 
 import br.com.leonardo.context.resolver.ResolversContextHolder;
-import br.com.leonardo.context.scanner.EndpointScanner;
-import br.com.leonardo.context.scanner.ExceptionHandlerScanner;
 import br.com.leonardo.context.scanner.Scanners;
 import br.com.leonardo.exception.ServerInitializationException;
-import br.com.leonardo.context.resolver.HttpExceptionHandlerResolver;
-import br.com.leonardo.context.resolver.HttpEndpointResolver;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

@@ -1,7 +1,6 @@
 package br.com.leonardo.io;
 
 import br.com.leonardo.config.ApplicationProperties;
-import br.com.leonardo.context.resolver.HttpExceptionHandlerResolver;
 import br.com.leonardo.context.resolver.ResolversContextHolder;
 import br.com.leonardo.http.HttpHeader;
 import br.com.leonardo.http.RequestLine;
@@ -13,7 +12,6 @@ import br.com.leonardo.io.output.util.ContentTypeNegotiation;
 import br.com.leonardo.observability.TraceIdLifeCycleHandler;
 import br.com.leonardo.parser.factory.HttpRequestFactory;
 import br.com.leonardo.parser.factory.model.HttpRequestData;
-import br.com.leonardo.context.resolver.HttpEndpointResolver;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

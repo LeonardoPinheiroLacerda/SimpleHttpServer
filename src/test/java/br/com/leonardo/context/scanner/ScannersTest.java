@@ -13,7 +13,6 @@ import org.reflections.Reflections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 // A dummy class located in this package to provide a base for scanning.

@@ -1,6 +1,7 @@
 package br.com.leonardo.io;
 
 import br.com.leonardo.config.ApplicationProperties;
+import br.com.leonardo.context.resolver.HttpEndpointResolver;
 import br.com.leonardo.context.resolver.HttpExceptionHandlerResolver;
 import br.com.leonardo.context.resolver.ResolversContextHolder;
 import br.com.leonardo.http.RequestLine;
@@ -8,7 +9,6 @@ import br.com.leonardo.io.input.HttpRequestReader;
 import br.com.leonardo.io.output.ApiHttpResponseWriter;
 import br.com.leonardo.io.output.factory.HttpWriterFactory;
 import br.com.leonardo.io.output.util.ContentTypeNegotiation;
-import br.com.leonardo.context.resolver.HttpEndpointResolver;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

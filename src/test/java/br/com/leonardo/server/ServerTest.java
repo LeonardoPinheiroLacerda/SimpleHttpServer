@@ -1,7 +1,5 @@
 package br.com.leonardo.server;
 
-import br.com.leonardo.context.resolver.HttpExceptionHandlerResolver;
-import br.com.leonardo.context.resolver.HttpEndpointResolver;
 import br.com.leonardo.context.resolver.ResolversContextHolder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

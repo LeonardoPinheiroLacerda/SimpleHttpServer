@@ -1,9 +1,9 @@
 package br.com.leonardo.context.scanner;
 
 import br.com.leonardo.context.annotations.ExceptionHandler;
+import br.com.leonardo.context.resolver.HttpExceptionHandlerResolver;
 import br.com.leonardo.exception.ServerInitializationException;
 import br.com.leonardo.exception.handler.HttpExceptionHandler;
-import br.com.leonardo.context.resolver.HttpExceptionHandlerResolver;
 import br.com.leonardo.exception.handler.StandardHttpExceptionHandlersFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
