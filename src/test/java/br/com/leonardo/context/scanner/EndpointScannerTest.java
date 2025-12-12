@@ -32,6 +32,7 @@ import static org.mockito.Mockito.*;
 class TestMiddleware extends Middleware {
     @Override
     public void run(HttpRequest<?> request) throws HttpMiddlewareException {
+        // Do nothing, only for testing purposes
     }
 }
 
